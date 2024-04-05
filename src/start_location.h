@@ -47,6 +47,8 @@ class start_location
         std::string name() const;
         int targets_count() const;
         omt_types_parameters random_target() const;
+        point_rel_om determine_search_offset() const;
+        point_rel_om find_nearest_ocean() const;
         const std::set<std::string> &flags() const;
 
         /**
@@ -108,6 +110,7 @@ class start_location
         /** @returns whether the start location at specified tripoint can belong to the specified city. */
         bool can_belong_to_city( const tripoint_om_omt &p, const city &cit ) const;
     private:
+        int ocean_offset = INT_MAX;
         translation _name;
         std::vector<omt_types_parameters> _locations;
         std::set<std::string> _flags;

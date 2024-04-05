@@ -143,6 +143,7 @@ void start_location::load( const JsonObject &jo, const std::string &src )
     if( jo.has_array( "allowed_z_levels" ) ) {
         assign( jo, "allowed_z_levels", constraints_.allowed_z_levels, strict );
     }
+    optional( jo, was_loaded, "ocean_offset", ocean_offset );
     optional( jo, was_loaded, "flags", _flags, auto_flags_reader<> {} );
 }
 
@@ -253,6 +254,56 @@ void start_location::prepare_map( tinymap &m ) const
         board_up( m, { temp.min().raw(), temp.max().raw() } );
     } else {
         m.translate( ter_t_window_domestic, ter_t_curtains );
+    }
+}
+
+point_rel_om start_location::determine_search_offset() const
+{
+    return ocean_offset == INT_MAX ? point_rel_om() : find_nearest_ocean();
+}
+
+point_rel_om start_location::find_nearest_ocean() const
+{
+    t_regional_settings_map region_settings_map;
+    const std::string rsettings_id = get_option<std::string>( "DEFAULT_REGION" );
+    t_regional_settings_map_citr rsit = region_settings_map.find( rsettings_id );
+    if( rsit == region_settings_map.end() ) {
+        debugmsg( "Can't find region '%s' to get ocean settings from", rsettings_id.c_str() );
+        return point_rel_om();
+    }
+    const regional_settings *settings = &rsit->second;
+
+    if( get_option<bool>( "OVERMAP_PLACE_OCEANS" ) ) {
+        // Not ideal as oceans can start later than these settings but Erk doesn't know a better way
+        point_rel_om ocean_dir( 0, -1 );
+        int ocean_dist = settings->overmap_ocean.ocean_start_north == 0 ? INT_MAX :
+                         settings->overmap_ocean.ocean_start_north;
+        const int ocean_start_east = settings->overmap_ocean.ocean_start_east == 0 ? INT_MAX :
+                                     settings->overmap_ocean.ocean_start_east;
+        if( ocean_start_east < ocean_dist ) {
+            ocean_dir = point_rel_om( 1, 0 );
+            ocean_dist = ocean_start_east;
+        }
+        const int ocean_start_south = settings->overmap_ocean.ocean_start_south == 0 ? INT_MAX :
+                                      settings->overmap_ocean.ocean_start_south;
+        if( ocean_start_south < ocean_dist ) {
+            ocean_dir = point_rel_om( 0, 1 );
+            ocean_dist = ocean_start_south;
+        }
+        const int ocean_start_west = settings->overmap_ocean.ocean_start_west == 0 ? INT_MAX :
+                                     settings->overmap_ocean.ocean_start_west;
+        if( ocean_start_west < ocean_dist ) {
+            ocean_dir = point_rel_om( -1, 0 );
+            ocean_dist = ocean_start_west;
+        }
+        if( ocean_dist == INT_MAX ) {
+            debugmsg( "Tried to find ocean when none set to spawn in region settings" );
+            return point_rel_om();
+        }
+        return ocean_dir * ( ocean_dist + ocean_offset );
+    } else {
+        debugmsg( "Tried to find ocean when disabled by external option" );
+        return point_rel_om();
     }
 }
 

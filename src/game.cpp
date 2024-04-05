@@ -939,7 +939,9 @@ bool game::start_game()
             omtstart = ret.first;
             associated_parameters = ret.second;
         } else {
-            auto ret = start_loc.find_player_initial_location( u.world_origin.value_or( point_abs_om() ) );
+            const point_abs_om search_location = u.world_origin.value_or( point_abs_om() ) +
+                                                 start_loc.determine_search_offset();
+            auto ret = start_loc.find_player_initial_location( search_location );
             omtstart = ret.first;
             associated_parameters = ret.second;
         }
