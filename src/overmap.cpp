@@ -5275,6 +5275,42 @@ void overmap::place_oceans()
     }
 }
 
+std::pair<point_rel_om, int> overmap::find_nearest_ocean_from_origin() const
+{
+    if( get_option<bool>( "OVERMAP_PLACE_OCEANS" ) ) {
+        // Not ideal as oceans can start later than these settings but Erk doesn't know a better way
+        point_rel_om ocean_dir( 0, -1 );
+        int ocean_dist = settings->overmap_ocean.ocean_start_north == 0 ? INT_MAX :
+                         settings->overmap_ocean.ocean_start_north;
+        const int ocean_start_east = settings->overmap_ocean.ocean_start_east == 0 ? INT_MAX :
+                                     settings->overmap_ocean.ocean_start_east;
+        if( ocean_start_east < ocean_dist ) {
+            ocean_dir = point_rel_om( 1, 0 );
+            ocean_dist = ocean_start_east;
+        }
+        const int ocean_start_south = settings->overmap_ocean.ocean_start_south == 0 ? INT_MAX :
+                                      settings->overmap_ocean.ocean_start_south;
+        if( ocean_start_south < ocean_dist ) {
+            ocean_dir = point_rel_om( 0, 1 );
+            ocean_dist = ocean_start_south;
+        }
+        const int ocean_start_west = settings->overmap_ocean.ocean_start_west == 0 ? INT_MAX :
+                                     settings->overmap_ocean.ocean_start_west;
+        if( ocean_start_west < ocean_dist ) {
+            ocean_dir = point_rel_om( -1, 0 );
+            ocean_dist = ocean_start_west;
+        }
+        if( ocean_dist == INT_MAX ) {
+            debugmsg( "Tried to find ocean when none set to spawn in region settings" );
+            return { point_rel_om(), 0 };
+        }
+        return { ocean_dir, ocean_dist };
+    } else {
+        debugmsg( "Tried to find ocean when disabled by external option" );
+        return { point_rel_om(), 0 };
+    }
+}
+
 void overmap::place_rivers( const overmap *north, const overmap *east, const overmap *south,
                             const overmap *west )
 {

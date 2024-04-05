@@ -554,6 +554,8 @@ class overmap
         std::vector<tripoint_om_omt> place_special(
             const overmap_special &special, const tripoint_om_omt &p, om_direction::type dir,
             const city &cit, bool must_be_unexplored, bool force );
+        // Returns a unit point_rel_om corresponding to the direction of the nearest ocean and the int representing the magnitude to multiply by
+        std::pair<point_rel_om, int> find_nearest_ocean_from_origin() const;
 
         // DEBUG ONLY!
         void debug_force_add_group( const mongroup &group );

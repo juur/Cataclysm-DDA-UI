@@ -47,9 +47,8 @@ class start_location
         std::string name() const;
         int targets_count() const;
         omt_types_parameters random_target() const;
-        point_rel_om determine_search_offset() const;
-        point_rel_om find_nearest_ocean() const;
         const std::set<std::string> &flags() const;
+        bool offset_search_location( point_abs_om &origin ) const;
 
         /**
          * Find a suitable start location on the overmap.
