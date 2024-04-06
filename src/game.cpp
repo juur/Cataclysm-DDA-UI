@@ -940,6 +940,7 @@ bool game::start_game()
             associated_parameters = ret.second;
         } else {
             point_abs_om search_location = u.world_origin.value_or( point_abs_om() );
+            // Potentially offset the search based on start location
             if( start_loc.offset_search_location( search_location ) ) {
                 // Had to load the origin overmap to get region settings
                 MAPBUFFER.clear();
