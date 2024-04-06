@@ -149,17 +149,13 @@ void start_location::load( const JsonObject &jo, const std::string &src )
         direction = jo.get_string( "ocean_direction" );
         if( direction == "random" ) {
             ocean_dir_random = true;
-        } else if( direction == "north" ) {
-            ocean_dir = 0;
-        } else if( direction == "east" ) {
-            ocean_dir = 1;
-        } else if( direction == "south" ) {
-            ocean_dir = 2;
-        } else if( direction == "west" ) {
-            ocean_dir = 3;
         } else {
-            jo.throw_error_at( "ocean_direction", string_format( "Ocean direction %s not recognised.",
-                               direction ) );
+            ocean_dir = static_cast<int>( io::string_to_enum<om_direction::type>( direction ) );
+            if( ocean_dir < 0 || ocean_dir > 3 ) {
+                jo.throw_error_at( "ocean_direction", string_format( "Ocean direction %s not recognised.",
+                                   direction ) );
+                ocean_dir = -1;
+            }
         }
     }
     optional( jo, was_loaded, "flags", _flags, auto_flags_reader<> {} );
