@@ -143,8 +143,8 @@ void start_location::load( const JsonObject &jo, const std::string &src )
     if( jo.has_array( "allowed_z_levels" ) ) {
         assign( jo, "allowed_z_levels", constraints_.allowed_z_levels, strict );
     }
-    optional( jo, was_loaded, "ocean_offset", ocean_offset );
     if( jo.has_string( "ocean_direction" ) ) {
+        mandatory( jo, was_loaded, "ocean_offset", ocean_offset );
         std::string direction;
         direction = jo.get_string( "ocean_direction" );
         if( direction == "random" ) {
@@ -157,6 +157,8 @@ void start_location::load( const JsonObject &jo, const std::string &src )
                 ocean_dir = -1;
             }
         }
+    } else {
+        optional( jo, was_loaded, "ocean_offset", ocean_offset );
     }
     optional( jo, was_loaded, "flags", _flags, auto_flags_reader<> {} );
 }
