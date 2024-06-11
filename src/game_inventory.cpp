@@ -594,10 +594,15 @@ class pickup_inventory_preset : public inventory_selector_preset
 class disassemble_inventory_preset : public inventory_selector_preset
 {
     public:
-        disassemble_inventory_preset( const Character &you, const inventory &inv ) : you( you ),
-            inv( inv ) {
+        disassemble_inventory_preset( const Character &you, const inventory &inv,
+                                      const inventory &items ) : you( you ),
+            inv( inv ), items( items ) {
 
             check_components = true;
+
+            std::string filter;
+            get_filter( filter );
+            // TODO: ?bug - changing hiearchy `;` twice removes filter?
 
             append_cell( [ this ]( const item_location & loc ) {
                 const requirement_data &req = get_recipe( loc ).disassembly_requirements();
@@ -612,28 +617,49 @@ class disassemble_inventory_preset : public inventory_selector_preset
                     ++( it->count );
                     components.erase( std::next( it ) );
                 }
-                return enumerate_as_string( components.begin(), components.end(),
+                return colorize( enumerate_as_string( components.begin(), components.end(),
                 []( const decltype( components )::value_type & comps ) {
-                    return comps.to_string();
-                } );
+                    // if it matches, color it
+                    // basic_item_filter
+                    const std::string ret = comps.to_string();
+                    if( ret == "3 gold" ) {
+                        return colorize( ret, c_light_red );
+                    }
+                    return ret;
+                } ), c_white );
             }, _( "YIELD" ) );
 
             append_cell( [ this ]( const item_location & loc ) {
-                return to_string_clipped( get_recipe( loc ).time_to_craft( get_player_character(),
-                                          recipe_time_flag::ignore_proficiencies ) );
+                return colorize( to_string_clipped( get_recipe( loc ).time_to_craft( get_player_character(),
+                                                    recipe_time_flag::ignore_proficiencies ) ), c_light_gray );
             }, _( "TIME" ) );
+
+            /*
+            append_cell( [ this ]( const item_location & loc ) {
+                return get_dist( loc );
+            }, _( "DISTANCE" ) );
+            */
+
+            append_cell( [ this ]( const item_location & loc ) {
+                return colorize( get_denialababa( loc ), c_red );
+            }, _( "CAN DISASSEMBLE" ) );
         }
 
         bool is_shown( const item_location &loc ) const override {
             return !get_recipe( loc ).is_null();
         }
 
-        std::string get_denial( const item_location &loc ) const override {
+        bool get_enabled( const item_location &loc ) const override {
             const auto ret = you.can_disassemble( *loc, inv );
             if( !ret.success() ) {
-                return ret.str();
+                return false;
             }
-            return std::string();
+
+            item_location ancestor = loc;
+            while( ancestor.has_parent() ) {
+                ancestor = ancestor.parent_item();
+            }
+            return rl_dist( you.pos(), ancestor.position() ) <= 1;
         }
 
     protected:
@@ -644,12 +670,57 @@ class disassemble_inventory_preset : public inventory_selector_preset
     private:
         const Character &you;
         const inventory &inv;
+        // todo: only use cutting items if they are within PICKUP_RANGE, not 60 tiles
+        const inventory &items;
+
+        // todo no need when it is too close
+        std::string get_dist( const item_location &loc ) const {
+            // find the topmost parent of the entry's item and categorize it by that
+            // to form the hierarchy
+            item_location ancestor = loc;
+            while( ancestor.has_parent() ) {
+                ancestor = ancestor.parent_item();
+            }
+
+            if( ancestor.where() == item_location::type::character ) {
+                return colorize( _( "on you" ), c_light_green );
+            }
+            const int dist = rl_dist( you.pos(), ancestor.position() );
+            if( dist == 0 ) {
+                return colorize( _( "under you" ), c_light_green );
+            } else if( dist <= 1 ) {
+                return colorize( direction_suffix( you.pos(), ancestor.position() ), c_light_green );
+            }
+            return colorize( direction_suffix( you.pos(), ancestor.position() ), c_red );
+        }
+
+        std::string get_denialababa( const item_location &loc ) const {
+            const auto ret = you.can_disassemble( *loc, inv );
+            if( !ret.success() ) {
+                return ret.str();
+            }
+
+
+            item_location ancestor = loc;
+            while( ancestor.has_parent() ) {
+                ancestor = ancestor.parent_item();
+            }
+            if( rl_dist( you.pos(), ancestor.position() ) > 1 ) {
+                return string_format( "%s is too far.", get_dist( loc ) );
+                // return _( "Too far." );
+            }
+
+            return std::string();
+        }
 };
 
 item_location game_menus::inv::disassemble( Character &you )
 {
-    return inv_internal( you, disassemble_inventory_preset( you, you.crafting_inventory() ),
-                         _( "Disassemble item" ), 1,
+    // TODO register context for `T`ravel to
+    // TODO items 3W are visïble in disassembly menu, Is that ok since they are within crafting? probably not
+    return inv_internal( you, disassemble_inventory_preset( you, you.crafting_inventory(),
+                         you.crafting_inventory( tripoint_zero, 60 ) ),
+                         _( "Disassemble item" ), 60,
                          _( "You don't have any items you could disassemble." ) );
 }
 
