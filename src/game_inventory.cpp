@@ -594,9 +594,8 @@ class pickup_inventory_preset : public inventory_selector_preset
 class disassemble_inventory_preset : public inventory_selector_preset
 {
     public:
-        disassemble_inventory_preset( const Character &you, const inventory &inv,
-                                      const inventory &items ) : you( you ),
-            inv( inv ), items( items ) {
+        disassemble_inventory_preset( const Character &you, const inventory &inv ) : you( you ),
+            inv( inv ) {
 
             check_components = true;
 
@@ -669,9 +668,8 @@ class disassemble_inventory_preset : public inventory_selector_preset
 
     private:
         const Character &you;
+        /// Tools etc. in crafters inventory to use for disassembly.
         const inventory &inv;
-        // todo: only use cutting items if they are within PICKUP_RANGE, not 60 tiles
-        const inventory &items;
 
         // todo no need when it is too close
         std::string get_dist( const item_location &loc ) const {
@@ -718,8 +716,7 @@ item_location game_menus::inv::disassemble( Character &you )
 {
     // TODO register context for `T`ravel to
     // TODO items 3W are visïble in disassembly menu, Is that ok since they are within crafting? probably not
-    return inv_internal( you, disassemble_inventory_preset( you, you.crafting_inventory(),
-                         you.crafting_inventory( tripoint_zero, 60 ) ),
+    return inv_internal( you, disassemble_inventory_preset( you, you.crafting_inventory() ),
                          _( "Disassemble item" ), 60,
                          _( "You don't have any items you could disassemble." ) );
 }
