@@ -1302,6 +1302,13 @@ conditional_t::func f_is_furniture( bool is_npc )
     };
 }
 
+conditional_t::func f_is_vehicle( bool is_npc )
+{
+    return [is_npc]( dialogue const & d ) {
+        return d.actor( is_npc )->get_vehicle();
+    };
+}
+
 conditional_t::func f_player_see( bool is_npc )
 {
     return [is_npc]( dialogue const & d ) {
@@ -2129,7 +2136,12 @@ std::unordered_map<std::string_view, int ( talker::* )() const> const f_get_vals
     { "thirst", &talker::get_thirst },
     { "volume", &talker::get_volume },
     { "weight", &talker::get_weight },
-    { "count", &talker::get_count }
+    { "count", &talker::get_count },
+    { "vehicle_facing", &talker::vehicle_facing },
+    { "current_speed", &talker::current_speed },
+    { "unloaded_weight", &talker::unloaded_weight },
+    { "friendly_passenger_count", &talker::friendly_passenger_count },
+    { "hostile_passenger_count", &talker::hostile_passenger_count }
 };
 } // namespace
 
@@ -2552,6 +2564,7 @@ parsers_simple = {
     {"u_is_monster", "npc_is_monster", &conditional_fun::f_is_monster },
     {"u_is_item", "npc_is_item", &conditional_fun::f_is_item },
     {"u_is_furniture", "npc_is_furniture", &conditional_fun::f_is_furniture },
+    {"u_is_vehicle", "npc_is_vehicle", &conditional_fun::f_is_vehicle },
     {"has_ammo", &conditional_fun::f_has_ammo },
     {"player_see_u", "player_see_npc", &conditional_fun::f_player_see },
 };

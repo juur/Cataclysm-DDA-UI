@@ -739,6 +739,60 @@ class talker
         virtual int climate_control_str_chill() const {
             return 0;
         }
+        virtual bool is_driven() const {
+            return false;
+        }
+        virtual bool is_remote_controlled() const {
+            return false;
+        }
+        virtual int vehicle_facing() const {
+            return 0;
+        }
+        virtual bool can_fly() const {
+            return false;
+        }
+        virtual bool is_flying() const {
+            return false;
+        }
+        virtual bool is_in_air() const {
+            return false;
+        }
+        virtual bool can_float() const {
+            return false;
+        }
+        virtual bool is_floating() const {
+            return false;
+        }
+        virtual bool is_falling() const {
+            return false;
+        }
+        virtual bool is_skidding() const {
+            return false;
+        }
+        virtual bool is_sinking() const {
+            return false;
+        }
+        virtual bool is_on_rails() const {
+            return false;
+        }
+        virtual int current_speed() const {
+            return 0;
+        }
+        virtual int unloaded_weight() const {
+            return 0;
+        }
+        virtual int friendly_passenger_count() const {
+            return 0;
+        }
+        virtual int hostile_passenger_count() const {
+            return 0;
+        }
+        virtual bool has_part_flag( const std::string &, bool ) const {
+            return false;
+        }
+        virtual bool is_passenger( Character & ) const {
+            return false;
+        }
 };
 template <class T, class B = talker>
 class talker_cloner : public B

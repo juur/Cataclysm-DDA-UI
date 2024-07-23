@@ -872,6 +872,8 @@ class vehicle
         std::optional<std::string> maybe_get_value( const std::string &key ) const;
         void clear_values();
         void add_chat_topic( const std::string &topic );
+        int get_passenger_count( bool hostile ) const;
+
         /**
          * Find a possibly off-map vehicle. If necessary, loads up its submap through
          * the global MAPBUFFER and pulls it from there. For this reason, you should only
@@ -1540,6 +1542,8 @@ class vehicle
 
         // get the total mass of vehicle, including cargo and passengers
         units::mass total_mass() const;
+        // get the mass of vehicle, excluding cargo and passengers
+        units::mass unloaded_mass() const;
         // Get the total mass of the vehicle minus the weight of any creatures that are
         // powering it; ie, the mass of the vehicle that the wheels are supporting
         units::mass weight_on_wheels() const;
@@ -2492,5 +2496,6 @@ class MapgenRemovePartHandler : public RemovePartHandler
         }
 };
 std::unique_ptr<talker> get_talker_for( vehicle &me );
+std::unique_ptr<talker> get_talker_for( const vehicle &me );
 std::unique_ptr<talker> get_talker_for( vehicle *me );
 #endif // CATA_SRC_VEHICLE_H

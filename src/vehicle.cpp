@@ -3523,6 +3523,20 @@ units::mass vehicle::total_mass() const
     return mass_cache;
 }
 
+units::mass vehicle::unloaded_mass() const
+{
+    units::mass m_total = 0_gram;
+    for( const vpart_reference &vp : get_all_parts() ) {
+        const size_t i = vp.part_index();
+        if( vp.part().removed || vp.part().is_fake ) {
+            continue;
+        }
+        m_total += vp.part().base.weight();
+
+    }
+    return m_total;
+}
+
 units::mass vehicle::weight_on_wheels() const
 {
     const units::mass vehicle_mass = total_mass();
@@ -5834,7 +5848,7 @@ void vehicle::on_move()
                         is_flying_in_air(), is_watercraft() && can_float(), can_use_rails(),
                         is_falling, is_in_water( true ) && !can_float(),
                         skidding, velocity, sm_pos.z );
-    get_event_bus().send_with_talker( this, e );
+    get_event_bus().send_with_talker( this, &pc, e );
 }
 
 void vehicle::slow_leak()
@@ -8149,6 +8163,29 @@ void vehicle::calc_mass_center( bool use_precalc ) const
     }
 }
 
+int vehicle::get_passenger_count( bool hostile ) const
+{
+    int count = 0;
+    for( const vpart_reference &vp : get_all_parts() ) {
+        const size_t i = vp.part_index();
+        if( vp.part().removed || vp.part().is_fake ) {
+            continue;
+        }
+        if( vp.has_feature( VPFLAG_BOARDABLE ) ) {
+            const Character *p = get_passenger( i );
+            const monster *z = get_monster( i );
+            if( p && p->is_npc() && p->as_npc()->is_enemy() == hostile ) {
+                count++;
+            }
+            if( z && ( z->attitude( get_avatar().as_character() ) == monster_attitude::MATT_ATTACK ) ==
+                hostile ) {
+                count++;
+            }
+        }
+    }
+    return count;
+}
+
 bounding_box vehicle::get_bounding_box( bool use_precalc, bool no_fake )
 {
     int min_x = INT_MAX;
@@ -8472,6 +8509,10 @@ void MapgenRemovePartHandler::add_item_or_charges(
 std::unique_ptr<talker> get_talker_for( vehicle &me )
 {
     return std::make_unique<talker_vehicle>( &me );
+}
+std::unique_ptr<talker> get_talker_for( const vehicle &me )
+{
+    return std::make_unique<talker_vehicle_const>( &me );
 }
 std::unique_ptr<talker> get_talker_for( vehicle *me )
 {
