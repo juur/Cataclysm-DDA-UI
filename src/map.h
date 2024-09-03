@@ -895,6 +895,7 @@ class map
                                const std::set<int> &parts_to_move = {} );
         bool displace_vehicle( vehicle &veh, const tripoint_rel_ms &dp, bool adjust_pos = true,
                                const std::set<int> &parts_to_move = {} );
+
         // make sure a vehicle that is split across z-levels is properly supported
         // calls displace_vehicle() and shouldn't be called from displace_vehicle
         void level_vehicle( vehicle &veh );
@@ -2333,7 +2334,7 @@ class map
          */
         void set_abs_sub( const tripoint_abs_sm &p );
 
-    private:
+    public:
         // TODO: Get rid of untyped overload
         field &get_field( const tripoint &p );
         field &get_field( const tripoint_bub_ms &p );
@@ -2450,7 +2451,7 @@ class map
          * The given submap pointer must not be null.
          */
         void setsubmap( size_t grididx, submap *smap );
-    private:
+    public:
         /** Caclulate the greatest populated zlevel in the loaded submaps and save in the level cache.
          * fills the map::max_populated_zlev and returns it
          * @return max_populated_zlev value
@@ -2524,7 +2525,7 @@ class map
 
     public:
         void process_items();
-    private:
+    
         // Iterates over every item on the map, passing each item to the provided function.
         void process_items_in_submap( submap &current_submap, const tripoint_rel_sm &gridp );
         void process_items_in_vehicles( submap &current_submap );

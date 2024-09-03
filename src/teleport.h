@@ -1,10 +1,12 @@
 #pragma once
 #ifndef CATA_SRC_TELEPORT_H
 #define CATA_SRC_TELEPORT_H
-struct tripoint;
+#include "coords_fwd.h"
+
+
 
 class Creature;
-
+class vehicle;
 namespace teleport
 {
 /** Teleports a creature to a tile within min_distance and max_distance tiles. Limited to 2D.
@@ -15,6 +17,8 @@ bool teleport( Creature &critter, int min_distance = 2, int max_distance = 12,
                bool add_teleglow = true );
 bool teleport_to_point( Creature &critter, tripoint target, bool safe, bool add_teleglow,
                         bool display_message = true, bool force = false );
+bool teleport_vehicle( vehicle &veh, const tripoint_abs_ms &dp );
+
 } // namespace teleport
 
 #endif // CATA_SRC_TELEPORT_H

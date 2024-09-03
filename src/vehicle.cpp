@@ -8166,21 +8166,15 @@ void vehicle::calc_mass_center( bool use_precalc ) const
 int vehicle::get_passenger_count( bool hostile ) const
 {
     int count = 0;
-    for( const vpart_reference &vp : get_all_parts() ) {
-        const size_t i = vp.part_index();
-        if( vp.part().removed || vp.part().is_fake ) {
-            continue;
+    for( const rider_data &rd : get_riders() ) {
+        if( rd.psg->is_npc() && rd.psg->as_npc()->is_enemy() == hostile ) {
+            count++;
         }
-        if( vp.has_feature( VPFLAG_BOARDABLE ) ) {
-            const Character *p = get_passenger( i );
-            const monster *z = get_monster( i );
-            if( p && p->is_npc() && p->as_npc()->is_enemy() == hostile ) {
-                count++;
-            }
-            if( z && ( z->attitude( get_avatar().as_character() ) == monster_attitude::MATT_ATTACK ) ==
-                hostile ) {
-                count++;
-            }
+        if( rd.psg->is_monster() &&
+            ( rd.psg->as_monster()->attitude( get_avatar().as_character() ) == monster_attitude::MATT_ATTACK )
+            ==
+            hostile ) {
+            count++;
         }
     }
     return count;
