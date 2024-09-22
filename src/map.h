@@ -2525,7 +2525,7 @@ class map
 
     public:
         void process_items();
-    
+
         // Iterates over every item on the map, passing each item to the provided function.
         void process_items_in_submap( submap &current_submap, const tripoint_rel_sm &gridp );
         void process_items_in_vehicles( submap &current_submap );

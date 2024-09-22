@@ -225,47 +225,18 @@ bool teleport::teleport_to_point( Creature &critter, tripoint target, bool safe,
 
 bool teleport::teleport_vehicle( vehicle &veh, const tripoint_abs_ms &dp )
 {
-    const std::set<int>& parts_to_move = {};
-    
+    const std::set<int> &parts_to_move = {};
+
     map &here = get_map();
     map *dest = &here;
     tileray facing;
     facing.init( veh.turn_dir );
 
-
-
     veh.precalc_mounts( 1, veh.skidding ? veh.turn_dir : facing.dir(), veh.pivot_point() );
 
-    // cancel out any movement of the vehicle due only to a change in pivot
-    //tripoint_rel_ms dp1 = dp - veh.pivot_displacement();
-
     Character &player_character = get_player_character();
-    //const bool seen = here.sees_veh( player_character, veh, false );
-
-
-
 
     const tripoint_bub_ms src = veh.pos_bub();
-    //const tripoint_abs_ms src = veh.global_square_location();
-    // handle vehicle ramps
-    int ramp_offset = 0;
-    //if( adjust_pos ) {
-    //    if( has_flag( ter_furn_flag::TFLAG_RAMP_UP, src + dp ) ) {
-    //        ramp_offset += 1;
-    //        veh.is_on_ramp = true;
-    //    } else if( has_flag( ter_furn_flag::TFLAG_RAMP_DOWN, src + dp ) ) {
-    //        ramp_offset -= 1;
-    //        veh.is_on_ramp = true;
-    //    }
-    //}
-
-
-    if( !here.inbounds( src ) ) {
-        /*      add_msg_debug( debugmode::DF_MAP,
-                             "map::displace_vehicle: coordinates out of bounds %d,%d,%d->%d,%d,%d",
-                             src.x(), src.y(), src.z(), dst.x(), dst.y(), dst.z() );*/
-        //return false;
-    }
 
     map tm;
     point_sm_ms src_offset;
@@ -281,13 +252,13 @@ bool teleport::teleport_vehicle( vehicle &veh, const tripoint_abs_ms &dp )
         if( dst_submap == nullptr ) {
             debugmsg( "Tried to displace vehicle at (%d,%d) but the dest submap is not loaded", dst_offset.x(),
                       dst_offset.y() );
-            return true;
+            return false;
         }
     }
     if( src_submap == nullptr ) {
         debugmsg( "Tried to displace vehicle at (%d,%d) but the src submap is not loaded", src_offset.x(),
                   src_offset.y() );
-        return true;
+        return false;
     }
     std::set<int> smzs;
 
@@ -312,7 +283,14 @@ bool teleport::teleport_vehicle( vehicle &veh, const tripoint_abs_ms &dp )
         add_msg_debug( debugmode::DF_MAP, "displace_vehicle [%s] failed", veh.name );
         return false;
     }
-
+    for( const vpart_reference &part : veh.get_all_parts_with_fakes( true ) ) {
+        tripoint_rel_ms rel_pos = veh.pos_bub() - part.pos_bub();
+        tripoint_bub_ms new_pos =  dest->bub_from_abs( dp ) + rel_pos;
+        veh_collision coll = veh.part_collision( part.part_index(), new_pos.raw(), true, false );
+        if( coll.type != veh_coll_nothing ) {
+            return false;
+        }
+    }
 
     here.memory_clear_vehicle_points( veh );
 
@@ -357,20 +335,13 @@ bool teleport::teleport_vehicle( vehicle &veh, const tripoint_abs_ms &dp )
             }
             const vehicle_part &veh_part = veh.part( prt );
 
-            // ramps make everything super tricky
-            int psg_offset_z = -ramp_offset;
             tripoint next_pos; // defaults to 0,0,0
             if( parts_to_move.empty() ) {
                 next_pos = veh_part.precalc[1];
             }
-            //if( has_flag( ter_furn_flag::TFLAG_RAMP_UP, src + dp + next_pos ) ) {
-            //    psg_offset_z += 1;
-            //} else if( has_flag( ter_furn_flag::TFLAG_RAMP_DOWN, src + dp + next_pos ) ) {
-            //    psg_offset_z -= 1;
-            //}
 
             // Place passenger on the new part location
-            tripoint_bub_ms psgp( here.bub_from_abs( dp ) + next_pos + tripoint( 0, 0, psg_offset_z ) );
+            tripoint_bub_ms psgp( here.bub_from_abs( dp ) + next_pos );
             // someone is in the way so try again
             if( creatures.creature_at( psgp ) ) {
                 complete = false;
@@ -387,8 +358,7 @@ bool teleport::teleport_vehicle( vehicle &veh, const tripoint_abs_ms &dp )
         }
     }
 
-
-    smzs = veh.advance_precalc_mounts( dst_offset.raw(), src.raw(), dp.raw(), ramp_offset,
+    smzs = veh.advance_precalc_mounts( dst_offset.raw(), src.raw(), dp.raw(), 0,
                                        true, parts_to_move );
     veh.update_active_fakes();
 
@@ -416,18 +386,11 @@ bool teleport::teleport_vehicle( vehicle &veh, const tripoint_abs_ms &dp )
         // delete the vehicle from the source z-level vehicle cache set if it is no longer on
         // that z-level
         if( src.z() != dp.z() ) {
-            
+
         }
         veh.check_is_heli_landed();
     }
-    level_cache &ch2 = here.get_cache( src.z() );
-            for( const vehicle *elem : ch2.vehicle_list ) {
-                if( elem == &veh ) {
-                    ch2.vehicle_list.erase( &veh );
-                    ch2.zone_vehicles.erase( &veh );
-                    break;
-                }
-            }
+
     if( remote ) {
         // Has to be after update_map or coordinates won't be valid
         g->setremoteveh( &veh );
@@ -439,22 +402,14 @@ bool teleport::teleport_vehicle( vehicle &veh, const tripoint_abs_ms &dp )
         here.on_vehicle_moved( dp.z() + vsmz );
     }
 
-
-
-
-
-
-
-
-
     if( veh.is_towing() ) {
         add_msg( m_info, _( "A towing cable snaps off of %s." ),
                  veh.tow_data.get_towed()->disp_name() );
         veh.tow_data.get_towed()->invalidate_towing( true );
     }
-        g->invalidate_main_ui_adaptor();
-        ui_manager::redraw_invalidated();
-        handle_key_blocking_activity();
+    g->invalidate_main_ui_adaptor();
+    ui_manager::redraw_invalidated();
+    handle_key_blocking_activity();
 
     here.invalidate_map_cache( src.z() );
     return true;
