@@ -7,7 +7,7 @@
     "name": { "str": "carbide arm plate (exosuit)", "str_pl": "carbide arm plates (exosuit)" },
     "description": "Designed to attach to an exosuit's arms, these are sturdy plates of vacuum-cast carbide.",
     "weight": "10125 g",
-	"sided": true,
+    "sided": true,
     "material": [ "vacuum_carbide" ],
     "non_functional": "damaged_exo_arm_vcc",
     "armor": [
