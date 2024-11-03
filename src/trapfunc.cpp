@@ -793,7 +793,7 @@ bool trapfunc::telepad( const tripoint &p, Creature *c, item * )
     } else {
         add_msg_if_player_sees( p, _( "The air shimmers around %s…" ), c->disp_name() );
     }
-    teleport::teleport( *c );
+    teleport::teleport_creature( *c );
     return false;
 }
 

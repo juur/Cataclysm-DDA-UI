@@ -3216,7 +3216,7 @@ std::optional<int> iuse::teleport( Character *p, item *it, const tripoint & )
         return std::nullopt;
     }
     p->mod_moves( -to_moves<int>( 1_seconds ) );
-    teleport::teleport( *p );
+    teleport::teleport_creature( *p );
     return 1;
 }
 

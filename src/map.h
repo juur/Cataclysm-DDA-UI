@@ -366,6 +366,7 @@ struct tile_render_info {
  */
 class map
 {
+        friend class teleport;
         friend class editmap;
         friend std::list<item> map_cursor::remove_items_with( const std::function<bool( const item & )> &,
                 int );
@@ -2334,7 +2335,7 @@ class map
          */
         void set_abs_sub( const tripoint_abs_sm &p );
 
-    public:
+    private:
         // TODO: Get rid of untyped overload
         field &get_field( const tripoint &p );
         field &get_field( const tripoint_bub_ms &p );
@@ -2451,7 +2452,7 @@ class map
          * The given submap pointer must not be null.
          */
         void setsubmap( size_t grididx, submap *smap );
-    public:
+    private:
         /** Caclulate the greatest populated zlevel in the loaded submaps and save in the level cache.
          * fills the map::max_populated_zlev and returns it
          * @return max_populated_zlev value
@@ -2525,7 +2526,7 @@ class map
 
     public:
         void process_items();
-
+    private:
         // Iterates over every item on the map, passing each item to the provided function.
         void process_items_in_submap( submap &current_submap, const tripoint_rel_sm &gridp );
         void process_items_in_vehicles( submap &current_submap );

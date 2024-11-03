@@ -36,8 +36,8 @@ static const flag_id json_flag_DIMENSIONAL_ANCHOR( "DIMENSIONAL_ANCHOR" );
 static const flag_id json_flag_GRAB( "GRAB" );
 static const flag_id json_flag_TELEPORT_LOCK( "TELEPORT_LOCK" );
 
-bool teleport::teleport( Creature &critter, int min_distance, int max_distance, bool safe,
-                         bool add_teleglow )
+bool teleport::teleport_creature( Creature &critter, int min_distance, int max_distance, bool safe,
+                                  bool add_teleglow )
 {
     if( min_distance > max_distance ) {
         debugmsg( "ERROR: Function teleport::teleport called with invalid arguments." );

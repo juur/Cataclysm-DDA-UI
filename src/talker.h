@@ -754,9 +754,6 @@ class talker
         virtual bool is_flying() const {
             return false;
         }
-        virtual bool is_in_air() const {
-            return false;
-        }
         virtual bool can_float() const {
             return false;
         }

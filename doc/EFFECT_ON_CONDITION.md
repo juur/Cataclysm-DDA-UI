@@ -284,9 +284,9 @@ Checks there is portal storm **and** you have `MAKAYLA_MUTATOR` mutation **and**
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 return true if alpha talker is female
@@ -294,18 +294,18 @@ return true if alpha talker is female
 "condition": "npc_female",
 ```
 
-### `u_is_avatar`, `u_is_npc`, `u_is_character`, `u_is_monster`, `u_is_item`, `u_is_furniture`, `npc_is_avatar`, `npc_is_npc`, `npc_is_character`, `npc_is_monster`, `npc_is_item`, `npc_is_furniture`
+### `u_is_avatar`, `u_is_npc`, `u_is_character`, `u_is_monster`, `u_is_item`, `u_is_furniture`, `u_is_vehicle`, `npc_is_avatar`, `npc_is_npc`, `npc_is_character`, `npc_is_monster`, `npc_is_item`, `npc_is_furniture`, `npc_is_vehicle`
 - type: simple string
-- return true if alpha or beta talker is avatar / NPC / character / monster / item /furniture
+- return true if alpha or beta talker is avatar / NPC / character / monster / item / furniture / vehicle
 - `avatar` is you, player, that control specific NPC (yes, your character is still NPC, you just can control it, as you can control another NPC using faction succession)
 - `npc` is any NPC, except Avatar
 - `character` is both NPC or Avatar
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 #### Examples
 return true if alpha talker is character (avatar or NPC)
@@ -321,9 +321,9 @@ return true if alpha talker is character (avatar or NPC)
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 #### Examples
 return true if alpha talker at the `field`
@@ -348,9 +348,9 @@ return true if alpha talker at location that can be transformed to faction camp
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 checks do alpha talker have `EAGLEEYED` trait
@@ -373,9 +373,9 @@ using `_has_any_trait` with single trait is also possible
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 Checks do alpha talker has `FEATHERS` mutation
@@ -389,9 +389,9 @@ Checks do alpha talker has `FEATHERS` mutation
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 ```json
@@ -404,9 +404,9 @@ Checks do alpha talker has `FEATHERS` mutation
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 ```json
@@ -419,14 +419,37 @@ Checks do alpha talker has `FEATHERS` mutation
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ✔️ | ❌ |
 
 #### Examples
 Alpha talker has `GRAB` flag, and beta talker has `GRAB_FILTER` flag; monster uses it to perform grabs - the game checks do monster (alpha talker, `u_`) has GRAB flag (i.e. able to grab at all), and check is target able to be grabbed using `GRAB_FILTER` flag
 ```json
 { "npc_has_flag": "GRAB_FILTER" }, { "u_has_flag": "GRAB" }
+```
+
+### `u_has_part_flag`, `npc_has_part_flag`
+- type: string or [variable object](##variable-object)
+- return true if alpha or beta talker is a vehicle with a part with a specific flag
+- if `enabled` is present and true the part needs to be enabled
+
+#### Valid talkers:
+
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ |
+
+#### Examples
+
+Alpha talker is a vehicle with a fluidtank
+```json
+{ "u_has_part_flag": "FLUIDTANK" }
+```
+
+Beta talker is a vehicle with a stereo which is activated
+```json
+{ "npc_has_part_flag": "STEREO", "enabled" : true }
 ```
 
 ### `u_has_species`, `npc_has_species`
@@ -435,9 +458,9 @@ Alpha talker has `GRAB` flag, and beta talker has `GRAB_FILTER` flag; monster us
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ❌ | ❌ | ❌ | ✔️ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ✔️ | ❌ | ❌ | ❌ |
 
 #### Examples
 alpha talker is `SLIME`
@@ -452,9 +475,9 @@ alpha talker is `SLIME`
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 alpha talker has bodytype `migo` , and beta has bodytype `human`
@@ -469,9 +492,9 @@ alpha talker has bodytype `migo` , and beta has bodytype `human`
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 #### Examples
 Checks do alpha talker has `u_met_sadie` variable
@@ -486,9 +509,9 @@ Checks do alpha talker has `u_met_sadie` variable
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 #### Examples
 checks this var exists
@@ -517,9 +540,9 @@ checks is `victim_type` has `zombie` faction
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 True if the character has selected Heist Driver profession at the character creation
@@ -538,9 +561,9 @@ True if the character has selected Fishing background at the character creation
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 True, if alpha talker has str 7 or more
@@ -555,9 +578,9 @@ True, if alpha talker has str 7 or more
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 check is your torso is 37 centigrade
@@ -572,9 +595,9 @@ check is your torso is 37 centigrade
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 check do you have a guitar
@@ -594,9 +617,9 @@ check do you have 6 ropes
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 check do you have manual in inventory
@@ -615,9 +638,9 @@ check do you have 3 manuals in inventory
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 check do you have `bio_synlungs`
@@ -639,9 +662,9 @@ check do you have any bionic presented
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 checks are you infected
@@ -670,9 +693,9 @@ checks are you hot or cold
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 check do you have `Principles of Chemistry`
@@ -686,9 +709,9 @@ check do you have `Principles of Chemistry`
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 You have equipped an item that you can stow
@@ -707,9 +730,9 @@ You have equipped an item that you can not stow, either because it's bionic pseu
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 
@@ -734,9 +757,9 @@ You have equipped an item that you can not stow, either because it's bionic pseu
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 
@@ -755,9 +778,9 @@ You don't wield anything
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 
@@ -777,9 +800,9 @@ true if you do not drive
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 check do you memorize `meat_hunk` recipe
@@ -793,9 +816,9 @@ check do you memorize `meat_hunk` recipe
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 check do you wear something with `RAD_DETECT` flag
@@ -809,9 +832,9 @@ check do you wear something with `RAD_DETECT` flag
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 check do you wield something with `WHIP` flag
@@ -825,9 +848,9 @@ check do you wield something with `WHIP` flag
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 check do you wield something with `LONG_SWORDS` weapon category
@@ -841,9 +864,9 @@ check do you wield something with `LONG_SWORDS` weapon category
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
 
 #### Examples
 
@@ -862,9 +885,9 @@ You can't see
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
 
 #### Examples
 
@@ -883,9 +906,9 @@ You can hear
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
 
 #### Examples
 
@@ -903,9 +926,9 @@ NPC is dead
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ### `u_is_on_terrain`, `npc_is_on_terrain`
 - type: string or [variable object](##variable-object)
@@ -913,9 +936,9 @@ NPC is dead
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 #### Examples
 check do you stand on grass
@@ -929,9 +952,9 @@ check do you stand on grass
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 #### Examples
 check do you stand on terrain with `SHRUB` flag
@@ -945,9 +968,9 @@ check do you stand on terrain with `SHRUB` flag
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 #### Examples
 check do you stand in a cloud of smoke
@@ -963,9 +986,9 @@ check do you stand in a cloud of smoke
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 Create a popup with message `You have died.  Continue as one of your followers?`
@@ -988,9 +1011,9 @@ Create a popup with message `You have died.  Continue as one of your followers?`
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 
 #### Examples
 Display coordinates of selected tile.
@@ -1089,9 +1112,9 @@ Check the location is in a city.
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 #### Examples
 return true if player can see NPC.
@@ -1105,9 +1128,9 @@ return true if player can see NPC.
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
 
 #### Examples
 
@@ -1123,6 +1146,183 @@ You can see selected location.
 }
 ```
 
+### `u_is_driven`, `npc_is_driven`
+- type: simple string
+- return true if alpha or beta talker is a vehicle currently being driven
+
+#### Valid talkers:
+
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ |
+
+#### Examples
+
+```json
+"u_is_driven"
+```
+
+### `u_is_remote_controlled`, `npc_is_remote_controlled`
+- type: simple string
+- return true if alpha or beta talker is a vehicle currently being remote controlled
+
+#### Valid talkers:
+
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ |
+
+#### Examples
+
+```json
+"u_is_remote_controlled"
+```
+
+### `u_can_fly`, `npc_can_fly`
+- type: simple string
+- return true if alpha or beta talker is a vehicle capable of flight
+
+#### Valid talkers:
+
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ |
+
+#### Examples
+
+```json
+"u_can_fly"
+```
+
+### `u_is_flying`, `npc_is_flying`
+- type: simple string
+- return true if alpha or beta talker is a vehicle currently flying
+
+#### Valid talkers:
+
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ |
+
+#### Examples
+
+```json
+"u_is_flying"
+```
+    
+### `u_can_float`, `npc_can_float`
+- type: simple string
+- return true if alpha or beta talker is a vehicle capable of floating
+
+#### Valid talkers:
+
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ |
+
+#### Examples
+
+```json
+"u_can_float"
+```
+
+### `u_is_floating`, `npc_is_floating`
+- type: simple string
+- return true if alpha or beta talker is a vehicle currently floating
+
+#### Valid talkers:
+
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ |
+
+#### Examples
+
+```json
+"u_is_floating"
+```
+
+
+### `u_is_falling`, `npc_is_falling`
+- type: simple string
+- return true if alpha or beta talker is a vehicle currently falling
+
+#### Valid talkers:
+
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ |
+
+#### Examples
+
+```json
+"u_is_falling"
+```
+
+### `u_is_skidding`, `npc_is_skidding`
+- type: simple string
+- return true if alpha or beta talker is a vehicle currently skidding
+
+#### Valid talkers:
+
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ |
+
+#### Examples
+
+```json
+"u_is_skidding"
+```
+
+### `u_is_sinking`, `npc_is_sinking`
+- type: simple string
+- return true if alpha or beta talker is a vehicle currently sinking
+
+#### Valid talkers:
+
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ |
+
+#### Examples
+
+```json
+"u_is_sinking"
+```
+
+### `u_is_on_rails`, `npc_is_on_rails`
+- type: simple string
+- return true if alpha or beta talker is a vehicle which uses rails
+
+#### Valid talkers:
+
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ |
+
+#### Examples
+
+```json
+"u_is_on_rails"
+```
+
+### `u_is_avatar_passenger`, `npc_is_avatar_passenger`
+- type: simple string
+- return true if alpha or beta talker is a vehicle with the avatar as a passenger
+
+#### Valid talkers:
+
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ |
+
+#### Examples
+
+```json
+"u_is_avatar_passenger"
+```
+
 ### `has_ammo`
 - type: simple string
 - return true if beta talker is an item and has enough ammo for at least one "shot".
@@ -1133,9 +1333,9 @@ You can see selected location.
 
 #### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 #### Examples
 Check whether the eoc `test_condition` would use its true or false effect 
@@ -1294,9 +1494,9 @@ Play a sound effect from sound pack `"type": "sound_effect"`
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ##### Examples
 
@@ -1316,9 +1516,9 @@ Opens up a dialog between the participants; this should only be used in effect_o
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ##### Examples
 Opens dialogue with topic `TALK_PERK_MENU_MAIN`
@@ -1346,9 +1546,9 @@ If beta talker is NPC, take control of it
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
 | ------ | --------- | --------- | ---- | ------- | ---  | 
-| ❌ | ❌ | ✔️ | ❌ | ❌ | ❌ |
+| ❌ | ❌ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Takes control of NPC
@@ -1367,9 +1567,9 @@ Works only with your followers
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
 | ------ | --------- | --------- | ---- | ------- | ---  | 
-| ✔️ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| ✔️ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Opens the menu to swap the avatar
@@ -1387,9 +1587,9 @@ Marks the given achievement as complete
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
 | ------ | --------- | --------- | ---- | ------- | ---  | 
-| ✔️ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| ✔️ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Gives achievement `escaped_the_cataclysm`
@@ -1408,9 +1608,9 @@ Will assign mission to the player
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Assign you a `MISSION_REACH_FAKE_DAVE` mission
@@ -1427,9 +1627,9 @@ Will remove mission from the player's active mission list without failing it.
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ || ✔️ 
 
 ##### Examples
 removes `MISSION_BONUS_KILL_BOSS` mission from your list
@@ -1450,9 +1650,9 @@ Will complete mission the player has, in one way or another
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ || ✔️ 
 
 ##### Examples
 Complete the mission `DID_I_WIN` as failed
@@ -1480,9 +1680,9 @@ Adds this mission on a list NPC can offer
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ❌ | ❌ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 NPC can offer mission `MISSION_GET_RELIC` now
@@ -1510,9 +1710,9 @@ Runs another EoC. It can be a separate EoC, or an inline EoC inside `run_eocs` e
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ##### Examples
 Run `EOC_DO_GOOD_THING` EoC
@@ -1600,9 +1800,9 @@ Store the character_id of You or NPC into a variable object
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 #### `run_eoc_with`
 Same as `run_eocs`, but runs the specific EoC with provided variables as context variables
@@ -1617,9 +1817,9 @@ Same as `run_eocs`, but runs the specific EoC with provided variables as context
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ##### Examples
 Run `EOC_BOOM` EoC; completely same as `run_eocs`
@@ -1730,9 +1930,9 @@ Then, by using `EOC_return_to_player`, you can return to your original body.
 ##### Valid talkers:
 If the eoc is global the avatar will be u and npc will be invalid. Otherwise it will be queued for the current alpha if they are a character and not be queued otherwise.
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 run `EOC_BOOM_RIGHT_NOW` instantly
@@ -1756,9 +1956,9 @@ Combination of `run_eoc_with` and `queue_eocs` - Put EoC into queue and run into
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 see a detailed example in `run_eoc_with`
@@ -1804,9 +2004,9 @@ If you or NPC does not have all of the listed bionics, mutations, spells or reci
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Tries to give you a mutation `A`, `B` or `C`, if you don't have one, with message `You got %s!`; If roll is successful, `EOC_SUCCESS` is run, otherwise `EOC_FAIL` is run
@@ -1832,9 +2032,9 @@ Set effects to be executed when conditions are met and when conditions are not m
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ##### Examples
 Displays a different message the first time it is run and the second time onwards
@@ -1866,9 +2066,9 @@ Check the value, and, depending on it, pick the case that would be run
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Checks the level of `some_spell` spell, and, related to this, do something: for spell level 0 it casts another_spell, for spell level 3 it adds effect "drunk", and so on.
@@ -1914,9 +2114,9 @@ The correspondence between "foreach" and "target" is as follows.
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
 | ------ | --------- | --------- | ---- | ------- | --- |
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ##### Examples
 Resets all of your vitamins.
@@ -1953,9 +2153,9 @@ and using `place_npcs`:
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ❌ | ❌ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 
@@ -2008,9 +2208,9 @@ Monsters run EoCs, provided by this effect; only works inside reality bubble
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ❌ | ❌ | ❌ | ✔️ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ✔️ | ❌ | ❌ | ❌ |
 
 ##### Examples
 
@@ -2055,9 +2255,9 @@ Run EOCs on items in your or NPC's inventory
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ | ❌ |
 
 ##### Examples
 Picks an item in character's hands, and run `EOC_DESTROY_ITEM` EoC on it
@@ -2118,9 +2318,9 @@ Search items around you on the map, and run EoC on them
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ##### Examples
 
@@ -2241,9 +2441,9 @@ Open a menu, that allow to select one of multiple options
 | "variables" | optional | pair of `"variable_name": "variable"` | variables, that would be passed to the EoCs; numeric values should be specified as strings; when a variable is an object and has the `i18n` member set to true, the variable will be localized; `expects_vars` condition can be used to ensure every variable exist before the EoC is run | 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 you can pick one of four options from `Choose your destiny` list; 
@@ -2273,9 +2473,9 @@ Run EoC multiple times, until specific condition would be met
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ##### Examples
 `EOC_until_nested` is run until `my_variable` hit 10; in this case 10 times
@@ -2320,9 +2520,9 @@ Your character or the NPC will attempt to mutate; used in mutation system, for o
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 ```json
@@ -2387,9 +2587,9 @@ Some effect would be applied on you or NPC
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Apply effect `drunk` for 4.5 hours:
@@ -2423,9 +2623,9 @@ You or NPC would have some bionic installed
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Install 1 `bio_power_storage` onto your character:
@@ -2448,9 +2648,9 @@ You or NPC would have some bionic uninstalled from your body
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Uninstall 1 `bio_power_storage` from your character:
@@ -2474,9 +2674,9 @@ Give character or NPC some mutation/trait
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Adds `TELEPATH` trait to the character:
@@ -2504,9 +2704,9 @@ Remove effect from character or NPC, if it has one
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Removes `infection` effect from player:
@@ -2534,9 +2734,9 @@ Character or NPC got trait or mutation removed, if it has one
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 
@@ -2560,9 +2760,9 @@ Your character or the NPC will activate the trait.
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 `process_mutation` mutation would be activated, which trigger all effect it can cause, including `activated_eocs` inside the mutation
@@ -2585,9 +2785,9 @@ Your character or the NPC will deactivate the trait.
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Deactivate `BIOLUM1_active` trait:
@@ -2610,9 +2810,9 @@ Your character or the NPC will learn the martial art style.
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 The character learn Eskrima 
@@ -2635,9 +2835,9 @@ Your character or the NPC will forget the martial art style.
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Character forget Eskrima 
@@ -2664,9 +2864,9 @@ Save a personal variable, that you can check later using `u_has_var`, `npc_has_v
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 Note: numeric vars can be set (and check) to monsters via `math` functions.  See the example below.
 
@@ -2749,9 +2949,9 @@ Your character or the NPC will clear any stored variable that has the same name,
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ##### Examples
 
@@ -2779,9 +2979,9 @@ Store string from `set_string_var` in the variable object `target_var`
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ##### Examples
 Replace value of variable `foo` with value `bar`
@@ -2818,9 +3018,9 @@ Create a context value with condition, that you can pass down the next topic or 
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ##### Examples
 Save the condition  `season is not winter, and it is a daytime` into `random_enc_condition` variable, then call the EoC `second_test`. Second EoC uses `random_enc_condition` to check and print message
@@ -2860,9 +3060,9 @@ Search a specific coordinates of map around `u_`, `npc_` or `target_params` and 
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ##### Examples
 Saves the current location into `i_am_here` variable:
@@ -2930,9 +3130,9 @@ Allow adjust location value, obtained by `u_location_variable`, and share the sa
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ##### Examples
 Move coordinates in `location_var` value one tile to the right
@@ -2956,9 +3156,9 @@ Opens a menu allowing the player to choose a new hair style
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 
@@ -2980,9 +3180,9 @@ Opens a menu allowing the player to choose a new beard style.
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 ```json
@@ -3015,9 +3215,9 @@ Your character or the npc will learn and memorize the recipe
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 You learn a recipe of cattail_jelly
@@ -3040,9 +3240,9 @@ Your character or the npc will forget the recipe
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 You forget the recipe `inventor_research_base_1`
@@ -3065,9 +3265,9 @@ Changes the initial talk_topic of the NPC in all future dialogues.
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ❌ | ❌ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Override the initial lighthouse girl topic `TALK_lighthouse_girl_start` with `TALK_lighthouse_girl_safe`
@@ -3086,9 +3286,9 @@ Your character or the NPC will be wet as if they were in the rain.
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Makes you 10% wet (whatever that means)
@@ -3111,9 +3311,9 @@ Emit a sound
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ##### Examples
 Generate a sound `Hi there!` 15 tiles around the NPC
@@ -3147,9 +3347,9 @@ Increases or decreases your healthiness (respond for disease immunity and regene
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Your health is decreased by 1, but not smaller than -200
@@ -3173,9 +3373,9 @@ Your character or the NPC will gain a morale bonus
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Gives `morale_afs_drugs` thought with +1 mood bonus
@@ -3206,9 +3406,9 @@ Your character or the NPC will lose picked `morale_type`
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 removes `bad_mood` morale from you
@@ -3231,9 +3431,9 @@ removes morale type, delivered by `morale_id`
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ❌ | ❌ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 adds 5 points to faction trust
@@ -3267,9 +3467,9 @@ Display a text message in the log. `u_message` and `npc_message` display a mess
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 
 ##### Examples
 Send a red-colored `Bad json! Bad!` message in the log 
@@ -3304,9 +3504,9 @@ You or NPC cast a spell. The spell uses fake spell data (ignore `energy_cost`, `
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
 
 ##### Examples
 You cast `spell_1` spell
@@ -3356,9 +3556,9 @@ NPC or character will start an activity
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 
@@ -3380,9 +3580,9 @@ You or NPC is teleported to `target_var` coordinates
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ✔️ | ✔️ |
 
 ##### Examples
 
@@ -3407,9 +3607,9 @@ If the target is an item, it will be deleted.
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ✔️ | ❌ |
 
 ##### Examples
 
@@ -3454,9 +3654,9 @@ You or NPC will be prevented from death. Intended for use in EoCs has `NPC_DEATH
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 
@@ -3496,9 +3696,9 @@ Alpha or beta talker forced to use a technique or special attack
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 you use autoattack
@@ -3554,9 +3754,9 @@ Give item a flag
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ | ❌ |
 
 ##### Examples
 Make item filthy
@@ -3573,9 +3773,9 @@ Remove a flag from item
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ | ❌ |
 
 ##### Examples
 Make item clean
@@ -3593,9 +3793,9 @@ You activate beta talker / NPC activates alpha talker. One must be a Character a
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- | 
-| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
 
 ##### Examples
 Force you consume drug item
@@ -3944,9 +4144,10 @@ Subtract this many turns from the alpha talker's moves.
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- |
-| ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ | ❌ |
+
 
 #### `transform_item`
 Convert the beta talker (which must be an item) into a different item, optionally activating it. Works similarly to the "transform" use_action.
@@ -3972,6 +4173,6 @@ Convert the beta talker (which must be an item) into a different item, optionall
 
 ##### Valid talkers:
 
-| Avatar | Character | NPC | Monster |  Furniture | Item |
-| ------ | --------- | --------- | ---- | ------- | --- |
-| ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌ |
+| Avatar | Character | NPC | Monster |  Furniture | Item | Vehicle |
+| ------ | --------- | --------- | ---- | ------- | --- | ---- |
+| ❌ | ❌ | ❌ | ❌ | ❌ | ✔️ | ❌ |
