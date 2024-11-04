@@ -100,6 +100,7 @@ std::string enum_to_string<event_type>( event_type data )
         case event_type::loses_addiction: return "loses_addiction";
         case event_type::loses_mutation: return "loses_mutation";
         case event_type::npc_becomes_hostile: return "npc_becomes_hostile";
+        case event_type::npc_changes_opinion: return "npc_changes_opinion";
         case event_type::opens_portal: return "opens_portal";
         case event_type::opens_spellbook: return "opens_spellbook";
         case event_type::opens_temple: return "opens_temple";
@@ -207,6 +208,7 @@ DEFINE_EVENT_FIELDS( learns_martial_art )
 DEFINE_EVENT_FIELDS( loses_addiction )
 DEFINE_EVENT_FIELDS( loses_mutation )
 DEFINE_EVENT_FIELDS( npc_becomes_hostile )
+DEFINE_EVENT_FIELDS( npc_changes_opinion )
 DEFINE_EVENT_FIELDS( opens_spellbook )
 DEFINE_EVENT_FIELDS( player_fails_conduct )
 DEFINE_EVENT_FIELDS( player_gets_achievement )

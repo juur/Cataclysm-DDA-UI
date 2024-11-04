@@ -129,6 +129,7 @@ enum class event_type : int {
     u_var_changed,
     vehicle_moves,
     character_butchered_corpse,
+    npc_changes_opinion,
     num_event_types // last
 };
 
@@ -796,6 +797,16 @@ struct event_spec<event_type::npc_becomes_hostile> {
     static constexpr std::array<std::pair<const char *, cata_variant_type>, 2> fields = {{
             { "npc", cata_variant_type::character_id },
             { "npc_name", cata_variant_type::string },
+        }
+    };
+};
+
+template<>
+struct event_spec<event_type::npc_changes_opinion> {
+    static constexpr std::array<std::pair<const char *, cata_variant_type>, 3> fields = {{
+            { "opinion", cata_variant_type::string },
+            { "reason", cata_variant_type::string },
+            { "amount", cata_variant_type::int_ },
         }
     };
 };
