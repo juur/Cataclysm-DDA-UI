@@ -110,14 +110,19 @@ void faction_template::load_relations( const JsonObject &jsobj )
         relations[fac.name()] = fac_relation;
     }
 }
+
 faction_price_rule faction_price_rules_reader::get_next( JsonValue &jv )
 {
     JsonObject jo = jv.get_object();
     faction_price_rule ret( icg_entry_reader::_part_get_next( jo ) );
-    optional( jo, false, "markup", ret.markup, 1.0 );
-    optional( jo, false, "premium", ret.premium, 1.0 );
-    optional( jo, false, "fixed_adj", ret.fixed_adj, std::nullopt );
-    optional( jo, false, "price", ret.price, std::nullopt );
+    ret.markup = get_dbl_or_var( jo, "markup", false, 1 );
+    ret.premium = get_dbl_or_var( jo, "premium", false, 1 );
+    if( jo.has_member( "fixed_adj" ) ) {
+        ret.fixed_adj = get_dbl_or_var( jo, "fixed_adj" );
+    }
+    if( jo.has_member( "price" ) ) {
+        ret.price = get_dbl_or_var( jo, "price" );
+    }
     return ret;
 }
 
@@ -448,7 +453,7 @@ std::pair<nc_color, std::string> faction::vitamin_stores( vitamin_type vit_type 
             msg ) );
 }
 
-faction_price_rule const *faction::get_price_rules( item const &it, npc const &guy ) const
+faction_price_rule const *faction::get_price_rules( item_location const &it, npc const &guy ) const
 {
     auto const el = std::find_if(
     price_rules.crbegin(), price_rules.crend(), [&it, &guy]( faction_price_rule const & fc ) {

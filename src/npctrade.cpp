@@ -1,7 +1,6 @@
 #include "npctrade.h"
 
 #include <algorithm>
-#include <iosfwd>
 #include <iterator>
 #include <list>
 #include <ostream>
@@ -11,6 +10,7 @@
 #include "avatar.h"
 #include "character.h"
 #include "debug.h"
+#include "dialogue.h"
 #include "faction.h"
 #include "item.h"
 #include "item_category.h" // IWYU pragma: keep
@@ -50,7 +50,7 @@ std::list<item> npc_trading::transfer_items( trade_selector::select_t &stuff, Ch
         } else if( receiver.is_npc() ) {
             npc = receiver.as_npc();
             f_wants = [npc]( item_location const & it, int price ) {
-                return npc->wants_to_buy( *it, price ).success();
+                return npc->wants_to_buy( it, price ).success();
             };
         }
         // spill contained, unwanted items
@@ -159,17 +159,20 @@ int npc_trading::bionic_install_price( Character &installer, Character &patient,
              : npc_trading::trading_price( patient, installer, { bionic, 1 } ) );
 }
 
-int npc_trading::adjusted_price( item const *it, int amount, Character const &buyer,
+int npc_trading::adjusted_price( item_location const &it, int amount, Character const &buyer,
                                  Character const &seller )
 {
     npc const *faction_party = buyer.is_npc() ? buyer.as_npc() : seller.as_npc();
-    faction_price_rule const *const fpr = faction_party->get_price_rules( *it );
+    faction_price_rule const *const fpr = faction_party->get_price_rules( it );
+    const_dialogue d( get_const_talker_for( get_avatar() ), get_const_talker_for( *faction_party ) );
 
-    double price = it->price_no_contents( true, fpr != nullptr ? fpr->price : std::nullopt );
+    double price = it->price_no_contents(
+                       true, fpr != nullptr && fpr->price ? std::optional<int>( fpr->price->evaluate( d ) )
+                       : std::nullopt );
     if( fpr != nullptr ) {
-        price *= fpr->premium;
+        price *= fpr->premium.evaluate( d );
         if( seller.is_npc() ) {
-            price *= fpr->markup;
+            price *= fpr->markup.evaluate( d );
         }
     }
     if( it->count_by_charges() && amount >= 0 ) {
@@ -182,7 +185,7 @@ int npc_trading::adjusted_price( item const *it, int amount, Character const &bu
     }
 
     if( fpr != nullptr && fpr->fixed_adj.has_value() ) {
-        double const fixed_adj = fpr->fixed_adj.value();
+        double const fixed_adj = fpr->fixed_adj->evaluate( d );
         price *= 1 + ( seller.is_npc() ? fixed_adj : -fixed_adj );
     } else {
         double const adjust = npc_trading::net_price_adjustment( buyer, seller );
@@ -202,11 +205,11 @@ int _trading_price( Character const &buyer, Character const &seller, item_locati
             return 0;
         }
     } else if( buyer.is_npc() ) {
-        if( !buyer.as_npc()->wants_to_buy( *it, 1 ).success() ) {
+        if( !buyer.as_npc()->wants_to_buy( it, 1 ).success() ) {
             return 0;
         }
     }
-    int ret = npc_trading::adjusted_price( it.get_item(), amount, buyer, seller );
+    int ret = npc_trading::adjusted_price( it, amount, buyer, seller );
     for( item_pocket const *pk : it->get_all_standard_pockets() ) {
         for( item const *pkit : pk->all_items_top() ) {
             ret += _trading_price( buyer, seller, item_location{ it, const_cast<item *>( pkit ) },
