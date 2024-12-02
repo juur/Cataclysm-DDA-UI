@@ -369,6 +369,19 @@ class item : public visitable
         bool is_software_storage() const;
 
         bool is_ebook_storage() const;
+        bool is_estorage() const;
+        bool is_browsed() const;
+        void set_browsed( bool browsed );
+        /** @return if item can be copied as an e-file */
+        bool is_ecopiable() const;
+        /** @return if all contained e - files are browsed, or if this item is browsed */
+        bool efiles_all_browsed() const;
+        /** @return total electronic memory size of all contained e-files */
+        units::ememory occupied_ememory() const;
+        /** @return total electronic memory size of the first E_FILE_STORAGE pocket */
+        units::ememory total_ememory() const;
+        /** @return remaining electronic memory on this e-device */
+        units::ememory remaining_ememory() const;
 
         /**
          * Checks whether the item's components (and sub-components if deep_search) are food items

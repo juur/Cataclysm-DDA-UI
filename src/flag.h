@@ -103,6 +103,7 @@ extern const flag_id flag_DIRTY;
 extern const flag_id flag_DISABLE_SIGHTS;
 extern const flag_id flag_DROP_ACTION_ONLY_IF_LIQUID;
 extern const flag_id flag_DURABLE_MELEE;
+extern const flag_id flag_E_STORABLE;
 extern const flag_id flag_EATEN_COLD;
 extern const flag_id flag_EATEN_HOT;
 extern const flag_id flag_EDIBLE_FROZEN;

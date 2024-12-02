@@ -898,6 +898,8 @@ These flags can be applied via JSON item definition to most items.  Not to be co
 - ```UNBREAKABLE``` This item can not be damaged, be that directly, while worn as armor, or when used as a melee weapon.
 - ```UNRECOVERABLE``` Cannot be recovered from a disassembly.
 - ```USE_POWER_WHEN_HIT``` This armor consume energy when you got hit, equal to damage that was dealt (energy consuming happen before the armor mitigation).
+- ```VIEW_PHOTOS``` This item can display held photos.
+- ```VIEW_RECIPES``` This item can display held recipes.
 - ```WATER_BREAK_ACTIVE``` Item can get wet and is broken in water if active.
 - ```WATER_BREAK``` Item is broken in water.
 - ```WATER_DISSOLVE``` Item is dissolved in water.
@@ -1460,6 +1462,7 @@ Techniques may be used by tools, armors, weapons and anything else that can be w
 - ```CANNIBALISM``` The item is a food that contains human flesh, and applies all applicable effects when consumed.
 - ```CHARGEDIM``` If illuminated, light intensity fades with charge, starting at 20% charge left.
 - ```DIG_TOOL``` If wielded, digs thorough terrain like rock and walls, as player walks into them.  If item also has `POWERED` flag, then it digs faster, but uses up the item's ammo as if activating it.
+- ```E_FILE_DEVICE``` The item can handle electronic files like a computer would.
 - ```FIRESTARTER``` Item will start fire with some difficulty.
 - ```FIRE``` Item will start a fire immediately.
 - ```HAS_RECIPE``` Used by the E-Ink tablet to indicate it's currently showing a recipe.

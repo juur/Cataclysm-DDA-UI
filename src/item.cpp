@@ -7104,6 +7104,25 @@ std::string item::display_name( unsigned int quantity ) const
         }
     }
 
+    if( is_estorage() ) {
+        if( is_browsed() ) {
+            units::ememory remain_mem = remaining_ememory();
+            units::ememory total_mem = total_ememory();
+            double ratio = static_cast<double>( remain_mem.value() ) / static_cast<double>( total_mem.value() );
+            nc_color ememory_color;
+            if( ratio > 0.66f ) {
+                ememory_color = c_light_green;
+            } else if( ratio > 0.33f ) {
+                ememory_color = c_yellow;
+            } else {
+                ememory_color = c_light_red;
+            }
+            name += string_format( _( " (%s free)" ), colorize( string_format( "%s/%s",
+                                   units::display( remain_mem ), units::display( total_mem ) ), ememory_color ) );
+        } else {
+            name += colorize( _( " (unbrowsed)" ), c_dark_gray );
+        }
+    }
     // HACK: This is a hack to prevent possible crashing when displaying maps as items during character creation
     if( is_map() && calendar::turn != calendar::turn_zero ) {
         tripoint_abs_omt map_pos_omt =
@@ -8811,6 +8830,72 @@ bool item::is_software_storage() const
 bool item::is_ebook_storage() const
 {
     return contents.has_pocket_type( pocket_type::EBOOK );
+}
+
+bool item::is_estorage() const
+{
+    return contents.has_pocket_type( pocket_type::E_FILE_STORAGE );
+}
+
+bool item::is_browsed() const
+{
+    return get_var( "browsed", "false" ) == "true";
+}
+
+void item::set_browsed( bool browsed )
+{
+    if( browsed ) {
+        set_var( "browsed", "true" );
+    } else {
+        set_var( "browsed", "false" );
+    }
+}
+
+bool item::is_ecopiable() const
+{
+    return type->book && type->book->chapters == 0;
+}
+
+bool item::efiles_all_browsed() const
+{
+    if( is_browsed() ) {
+        return true;
+    }
+    std::vector<const item *> efiles = contents.efiles();
+    if( !efiles.empty() ) {
+        for( const item *i : efiles ) {
+            if( !i->is_browsed() ) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+units::ememory item::occupied_ememory() const
+{
+    std::vector<const item *> efiles = contents.efiles();
+    units::ememory total = 0_B;
+    for( const item *i : efiles ) {
+        total += i->type->ememory_size;
+    }
+    return total;
+}
+
+units::ememory item::total_ememory() const
+{
+    std::vector<const item_pocket *> pockets = contents.get_pockets( []( item_pocket const & pocket ) {
+        return pocket.is_type( pocket_type::E_FILE_STORAGE );
+    } );
+    if( pockets.size() > 1 ) {
+        debugmsg( "no more than one E_FILE_STORAGE pocket is allowed" );
+    }
+    return pockets.back()->get_pocket_data()->ememory_max;
+}
+
+units::ememory item::remaining_ememory() const
+{
+    return total_ememory() - occupied_ememory();
 }
 
 bool item::is_maybe_melee_weapon() const
@@ -15540,8 +15625,10 @@ item::aggregate_t item::aggregated_contents( int depth, int maxdepth ) const
     aggregate_t *running_max{};
     aggregate_t *max_type{};
     auto const cont_and_soft = []( item_pocket const & pkt ) {
-        return pkt.is_type( pocket_type::CONTAINER ) || pkt.is_type( pocket_type::SOFTWARE );
+        return pkt.is_type( pocket_type::CONTAINER ) || pkt.is_type( pocket_type::SOFTWARE ) ||
+               pkt.is_type( pocket_type::E_FILE_STORAGE );
     };
+
 
     for( item_pocket const *pk : contents.get_pockets( cont_and_soft ) ) {
         for( item const *pkit : pk->all_items_top() ) {

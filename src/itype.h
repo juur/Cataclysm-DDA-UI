@@ -111,7 +111,12 @@ struct islot_tool {
 
     float fuel_efficiency = -1.0f;
 
+    //ememory transferred per second
+    units::ememory etransfer_rate = 0_B;
+
     std::vector<int> rand_charges;
+    //list of edevice types supported for file transfer
+    std::vector<std::string> edevice_mediums;
 };
 
 constexpr float base_metabolic_rate =
@@ -1273,6 +1278,8 @@ struct itype {
         units::mass weight = 0_gram;
         /** Weight difference with the part it replaces for mods (defaults to weight) */
         units::mass integral_weight = -1_gram;
+        /** Electronic memory size of item */
+        units::ememory ememory_size = 0_B;
 
         std::vector<std::pair<itype_id, mod_id>> src;
 

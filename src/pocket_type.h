@@ -14,6 +14,7 @@ enum class pocket_type : int {
     EBOOK, // holds electronic books for a device or usb
     CABLE, // pocket for storing power/data cables and handling their connections
     MIGRATION, // this allows items to load contents that are too big, in order to spill them later.
+    E_FILE_STORAGE, // storing electronic files
     LAST
 };
 
