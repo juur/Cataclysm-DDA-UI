@@ -719,6 +719,8 @@ std::function<bool( const inventory_entry & )> inventory_selector_preset::get_fi
     };
 }
 
+void inventory_selector_preset::on_filter_change( const std::string &/*filter*/ ) const {};
+
 std::string inventory_selector_preset::get_caption( const inventory_entry &entry ) const
 {
     size_t count = entry.get_stack_size();

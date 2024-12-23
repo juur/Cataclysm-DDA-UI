@@ -267,7 +267,7 @@ class inventory_selector_preset
 
         virtual std::function<bool( const inventory_entry & )> get_filter( const std::string &filter )
         const;
-        virtual void on_filter_change( const std::string &filter ) const {}
+        virtual void on_filter_change( const std::string &filter ) const;
 
         bool indent_entries() const {
             return _indent_entries;
