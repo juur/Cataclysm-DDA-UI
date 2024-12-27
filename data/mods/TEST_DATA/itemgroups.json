@@ -77,5 +77,20 @@
     "id": "test_NPC_guns",
     "subtype": "distribution",
     "entries": [ { "group": "modular_m4a1", "prob": 100, "charges": 30, "contents-group": "issued_carbine_mods" } ]
+  },
+  {
+    "type": "item_group",
+    "id": "test_edevices_efiles",
+    "subtype": "collection",
+    "items": [ "test_efile_small", "test_efile_medium", "test_efile_large", "test_efile_copiable" ]
+  },
+  {
+    "type": "item_group",
+    "id": "test_edevices_standard",
+    "subtype": "collection",
+    "entries": [
+      { "item": "eink_tablet_pc", "prob": 20, "charges": 100, "contents-group": "test_edevices_efiles" },
+      { "item": "eink_tablet_pc", "prob": 20, "charges": 100, "contents-item": "test_efile_copiable" }
+    ]
   }
 ]
