@@ -972,7 +972,7 @@ double Creature::accuracy_projectile_attack( dealt_projectile_attack &attack ) c
 }
 
 void projectile::apply_effects_nodamage( Creature &target, Creature *source,
-        const dealt_damage_instance &dealt_dam, bool soaked_through ) const
+        const bodypart_id &bp_hit, bool soaked_through ) const
 {
     bool is_liquid = proj_effects.count( ammo_effect_LIQUID );
     if( proj_effects.count( ammo_effect_BOUNCE ) ) {
@@ -984,7 +984,7 @@ void projectile::apply_effects_nodamage( Creature &target, Creature *source,
             if( on_hit_eff.need_touch_skin && is_liquid && !soaked_through ) {
                 continue;
             }
-            target.add_effect( on_hit_eff.effect, on_hit_eff.duration, dealt_dam.bp_hit, false,
+            target.add_effect( on_hit_eff.effect, on_hit_eff.duration, bp_hit, false,
                                on_hit_eff.intensity );
         }
     }
@@ -1380,7 +1380,7 @@ void Creature::deal_projectile_attack( Creature *source, dealt_projectile_attack
 
     proj.apply_effects_damage( *this, source, dealt_dam, goodhit < accuracy_critical );
 
-    proj.apply_effects_nodamage( *this, source, dealt_dam, soaked_through );
+    proj.apply_effects_nodamage( *this, source, dealt_dam.bp_hit, soaked_through );
 
     if( print_messages ) {
         messaging_projectile_attack( source, hit_selection, dealt_dam.total_damage() );
