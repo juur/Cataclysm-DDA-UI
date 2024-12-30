@@ -733,21 +733,24 @@
     "symbol": ",",
     "color": "white",
     "name": { "str": "USB drive" },
-    "description": "A USB thumb drive.  Useful for holding software.",
+    "description": "A USB thumb drive.  Useful for holding electronic data.",
     "price": "12 USD",
     "price_postapoc": "10 cent",
     "material": [ "plastic", "aluminum" ],
     "weight": "4536 mg",
     "volume": "4 ml",
     "longest_side": "5 cm",
+    "etransfer_rate": "20 MB",
+    "edevice_mediums": [ "usb" ],
     "pocket_data": [
       { "pocket_type": "SOFTWARE", "max_contains_volume": "1 L", "max_contains_weight": "1 kg" },
       {
-        "pocket_type": "EBOOK",
+        "pocket_type": "E_FILE_STORAGE",
         "rigid": true,
         "max_contains_volume": "1 ml",
         "max_contains_weight": "1 g",
-        "weight_multiplier": 0.0
+        "weight_multiplier": 0.0,
+        "ememory_max": "128 GB"
       }
     ],
     "to_hit": { "grip": "bad", "length": "hand", "surface": "any", "balance": "clumsy" },
@@ -2230,7 +2233,7 @@
     "volume": "50 ml"
   },
   {
-    "type": "GENERIC",
+    "type": "TOOL",
     "id": "memory_card",
     "name": { "str": "memory card" },
     "description": "A memory card, can be used to store data.",
@@ -2244,13 +2247,16 @@
     "material": [ "plastic" ],
     "ascii_picture": "memory_card",
     "flags": [ "MC_MOBILE" ],
+    "etransfer_rate": "12 MB",
+    "edevice_mediums": [ "sd" ],
     "pocket_data": [
       {
-        "pocket_type": "EBOOK",
+        "pocket_type": "E_FILE_STORAGE",
         "rigid": true,
         "max_contains_volume": "1 ml",
         "max_contains_weight": "1 g",
-        "weight_multiplier": 0.0
+        "weight_multiplier": 0.0,
+        "ememory_max": "64 GB"
       }
     ]
   },

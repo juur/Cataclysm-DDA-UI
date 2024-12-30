@@ -137,10 +137,10 @@
     "color": "blue",
     "ammo": [ "battery" ],
     "charges_per_use": 1,
+    "etransfer_rate": "30 MB",
+    "edevice_mediums": [ "sd", "usb", "phone" ],
     "use_action": [
-      "EINKTABLETPC",
-      "ELECTRICSTORAGE",
-      "EBOOKREAD",
+      "E_FILE_DEVICE",
       {
         "type": "transform",
         "menu_text": "Turn on the screen",
@@ -156,13 +156,15 @@
     "pocket_data": [
       { "pocket_type": "MAGAZINE", "rigid": true, "ammo_restriction": { "battery": 85 } },
       {
-        "pocket_type": "EBOOK",
+        "pocket_type": "E_FILE_STORAGE",
         "rigid": true,
         "max_contains_volume": "1 ml",
         "max_contains_weight": "1 g",
-        "weight_multiplier": 0.0
+        "weight_multiplier": 0.0,
+        "ememory_max": "32 GB"
       }
-    ]
+    ],
+    "variables": { "browsed": "false" }
   },
   {
     "type": "TOOL",
@@ -173,7 +175,6 @@
     "revert_to": "eink_tablet_pc",
     "use_action": [
       "EINKTABLETPC",
-      "ELECTRICSTORAGE",
       "EBOOKREAD",
       {
         "ammo_scale": 0,
@@ -353,11 +354,11 @@
     "price_postapoc": "2 USD 50 cent",
     "ammo": [ "battery" ],
     "charges_per_use": 1,
+    "etransfer_rate": "30 MB",
+    "edevice_mediums": [ "sd", "usb", "phone" ],
     "use_action": [
-      "EINKTABLETPC",
       "EBOOKSAVE",
-      "EBOOKREAD",
-      "ELECTRICSTORAGE",
+      "E_FILE_DEVICE",
       "PORTABLE_GAME",
       {
         "type": "effect_on_conditions",
@@ -380,11 +381,12 @@
     "pocket_data": [
       { "pocket_type": "MAGAZINE", "rigid": true, "ammo_restriction": { "battery": 200 } },
       {
-        "pocket_type": "EBOOK",
+        "pocket_type": "E_FILE_STORAGE",
         "rigid": true,
         "max_contains_volume": "1 ml",
         "max_contains_weight": "1 g",
-        "weight_multiplier": 0.0
+        "weight_multiplier": 0.0,
+        "ememory_max": "1 TB"
       }
     ],
     "melee_damage": { "bash": 6 }
@@ -397,10 +399,8 @@
     "power_draw": "1 W",
     "revert_to": "laptop",
     "use_action": [
-      "EINKTABLETPC",
-      "EBOOKSAVE",
+      "E_FILE_DEVICE",
       "EBOOKREAD",
-      "ELECTRICSTORAGE",
       "PORTABLE_GAME",
       {
         "type": "effect_on_conditions",
@@ -594,15 +594,15 @@
     "color": "light_gray",
     "ammo": [ "battery" ],
     "charges_per_use": 1,
+    "etransfer_rate": "30 MB",
+    "edevice_mediums": [ "sd", "phone" ],
     "use_action": [
       "CAMERA",
       "MP3",
       "CALORIES_INTAKE_TRACKER",
       "PORTABLE_GAME",
-      "EINKTABLETPC",
-      "ELECTRICSTORAGE",
+      "E_FILE_DEVICE",
       "EBOOKSAVE",
-      "EBOOKREAD",
       {
         "type": "effect_on_conditions",
         "menu_text": "Check the system",
@@ -634,11 +634,12 @@
     "pocket_data": [
       { "pocket_type": "MAGAZINE", "rigid": true, "ammo_restriction": { "battery": 56 } },
       {
-        "pocket_type": "EBOOK",
+        "pocket_type": "E_FILE_STORAGE",
         "rigid": true,
         "max_contains_volume": "1 ml",
         "max_contains_weight": "1 g",
-        "weight_multiplier": 0.0
+        "weight_multiplier": 0.0,
+        "ememory_max": "256 GB"
       }
     ]
   },

@@ -2,7 +2,24 @@
   {
     "id": "laptop_files_work",
     "type": "item_group",
-    "subtype": "distribution",
-    "entries": [ { "item": "computer_science", "prob": 100, "count": 1 } ]
+    "subtype": "collection",
+    "entries": [
+      { "item": "efile_test", "prob": 100, "count": 1 },
+      { "item": "book_nonf_hard_homemk_anythingcan", "prob": 100, "count": 1 },
+      { "item": "book_nonf_hard_homemk_grtrms", "prob": 100, "count": 1 },
+      { "item": "book_nonf_hard_homemk_handshome", "prob": 100, "count": 1 }
+    ]
+  },
+  {
+    "id": "erm_files_work",
+    "type": "item_group",
+    "subtype": "collection",
+    "entries": [
+      { "item": "efile_test", "prob": 100, "count": 1 },
+      { "item": "book_nonf_hard_homemk_anythingcan", "prob": 100, "count": 1 },
+      { "item": "book_nonf_hard_homemk_grtrms", "prob": 100, "count": 1 },
+      { "item": "manual_mechanics", "prob": 100, "count": 1 },
+      { "item": "book_nonf_soft_mechnic_hotrod", "prob": 100, "count": 1 }
+    ]
   }
 ]

@@ -88,5 +88,42 @@
     "description": "Huge archives of numerous IC circuit datasheets from several major manufacturers.  Probably valuable to the right person, as it would be hard to salvage and reuse these components without them.",
     "price": "400 USD",
     "price_postapoc": "0 cent"
+  },
+  {
+    "abstract": "abstract_efile",
+    "type": "GENERIC",
+    "symbol": "o",
+    "name": "abstract electronic file",
+    "description": "abstract electronic file, copy-from for any item that should solely be on an electronic storage medium",
+    "ememory_size": "1 KB",
+    "flags": [ "E_STORABLE", "ZERO_WEIGHT", "NO_DROP", "IRREMOVABLE" ],
+    "variables": { "browsed": "false" }
+  },
+  {
+    "abstract": "abstract_efile_read",
+    "copy-from": "abstract_efile",
+    "type": "GENERIC",
+    "symbol": "o",
+    "name": "abstract read electronic file",
+    "description": "abstract electronic file, copy-from for any item that should solely be on an electronic storage medium, pre-read so the device doesn't have to be browsed.",
+    "variables": { "browsed": "true" }
+  },
+  {
+    "id": "efile_test",
+    "copy-from": "abstract_efile",
+    "type": "GENERIC",
+    "symbol": "o",
+    "name": "test electronic file",
+    "description": "TEST FILE REMOVE",
+    "ememory_size": "2048 B"
+  },
+  {
+    "id": "efile_junk",
+    "copy-from": "abstract_efile",
+    "type": "GENERIC",
+    "symbol": "o",
+    "name": "junk file",
+    "description": "A useless piece of electronic data.",
+    "ememory_size": "2048 B"
   }
 ]
