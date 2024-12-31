@@ -703,6 +703,7 @@ struct OutputDebugStreamA : public std::ostream {
                     } else {
                         ::OutputDebugStringA( s );
                     }
+                    buf->pubsync();
                 }
                 static constexpr std::streamsize max = 4096;
                 std::string output_string{};
