@@ -686,7 +686,6 @@ struct OutputDebugStreamA : public std::ostream {
 #endif
 
 struct DebugFile {
-    DebugFile();
     ~DebugFile();
     void init( DebugOutput, const cata_path &filename );
     std::ostream &get_file();
@@ -703,9 +702,6 @@ struct DebugFile {
 
 // DebugFile OStream Wrapper                                        {{{2
 // ---------------------------------------------------------------------
-
-
-DebugFile::DebugFile() = default;
 
 DebugFile::~DebugFile()
 {
