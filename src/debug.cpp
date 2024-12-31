@@ -696,7 +696,7 @@ struct DebugFile {
 
     // Using shared_ptr for the type-erased deleter support, not because
     // it needs to be shared.
-    std::shared_ptr<std::ostream> file;
+    std::shared_ptr<std::ostream> file = std::make_shared<std::ostringstream>();
     cata_path filename;
 };
 
@@ -716,9 +716,6 @@ DebugFile::~DebugFile()
 
 std::ostream &DebugFile::get_file()
 {
-    if( !file ) {
-        file = std::make_shared<std::ostringstream>();
-    }
     return *file;
 }
 
