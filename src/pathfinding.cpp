@@ -441,8 +441,8 @@ int map::extra_cost( const tripoint_bub_ms &cur, const tripoint_bub_ms &p,
 }
 
 std::vector<tripoint_bub_ms> map::route( const tripoint_bub_ms &f, const tripoint_bub_ms &t,
-                                  const PathfindingSettings &settings,
-                                  const std::function<bool( const tripoint_bub_ms & )> &avoid ) const
+        const PathfindingSettings &settings,
+        const std::function<bool( const tripoint_bub_ms & )> &avoid ) const
 {
     /* TODO: If the origin or destination is out of bound, figure out the closest
      * in-bounds point and go to that, then to the real origin/destination.
@@ -698,17 +698,4 @@ std::vector<tripoint_bub_ms> map::route( const tripoint_bub_ms &f, const tripoin
     }
 
     return ret;
-}
-
-std::vector<tripoint_bub_ms> map::route( const tripoint_bub_ms &f, const tripoint_bub_ms &t,
-        const PathfindingSettings &settings,
-        const std::function<bool( const tripoint & )> &avoid ) const
-{
-    std::vector<tripoint> raw_result = route( f.raw(), t.raw(), settings, avoid );
-    std::vector<tripoint_bub_ms> result;
-    std::transform( raw_result.begin(), raw_result.end(), std::back_inserter( result ),
-    []( const tripoint & p ) {
-        return tripoint_bub_ms( p );
-    } );
-    return result;
 }
