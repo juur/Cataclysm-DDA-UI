@@ -107,8 +107,7 @@
     "name": "canyon",
     "sym": "V",
     "color": "light_gray",
-    "see_cost": "full_high",
-    "flags": [ "REQUIRES_PREDECESSOR" ]
+    "see_cost": "full_high"
   },
   {
     "type": "overmap_terrain",
@@ -128,7 +127,8 @@
     "type": "overmap_terrain",
     "id": [ "canyon_2way_ground", "canyon_3way_ground", "canyon_edge_ground", "canyon_corner_ground" ],
     "copy-from": "generic_canyon",
-    "see_cost": "all_clear"
+    "see_cost": "all_clear",
+    "flags": [ "REQUIRES_PREDECESSOR" ]
   },
   {
     "type": "overmap_terrain",
