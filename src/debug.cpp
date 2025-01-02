@@ -658,7 +658,7 @@ struct OutputDebugStreamA : public std::ostream {
             protected:
                 virtual int overflow( int c ) override {
                     if( EOF != c ) {
-                        int rc = buf->sputc( c );
+                        buf->sputc( c );
                         if( std::iscntrl( c ) ) {
                             send();
                         } else {
