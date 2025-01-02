@@ -308,13 +308,15 @@
   {
     "type": "mapgen",
     "method": "json",
-    "om_terrain": "canyon_edge_ground",
+    "//": "z0 omts, actual mapgen is done by nests in the z-2 versions",
+    "om_terrain": [ "canyon_edge_ground", "canyon_corner_ground", "canyon_2way_ground", "canyon_3way_ground" ],
     "object": { "fallback_predecessor_mapgen": "field" }
   },
   {
     "type": "mapgen",
     "method": "json",
-    "om_terrain": "canyon_edge",
+    "//": "z-1 omts, actual mapgen is done by nests in the z-2 versions",
+    "om_terrain": [ "canyon_edge", "canyon_corner", "canyon_2way", "canyon_3way" ],
     "object": { "predecessor_mapgen": "open_air" }
   },
   {
@@ -492,18 +494,6 @@
   {
     "type": "mapgen",
     "method": "json",
-    "om_terrain": "canyon_corner_ground",
-    "object": { "fallback_predecessor_mapgen": "field" }
-  },
-  {
-    "type": "mapgen",
-    "method": "json",
-    "om_terrain": "canyon_corner",
-    "object": { "predecessor_mapgen": "open_air" }
-  },
-  {
-    "type": "mapgen",
-    "method": "json",
     "om_terrain": "canyon_corner_bottom",
     "object": {
       "predecessor_mapgen": "field",
@@ -676,18 +666,6 @@
   {
     "type": "mapgen",
     "method": "json",
-    "om_terrain": "canyon_2way_ground",
-    "object": { "fallback_predecessor_mapgen": "field" }
-  },
-  {
-    "type": "mapgen",
-    "method": "json",
-    "om_terrain": "canyon_2way",
-    "object": { "predecessor_mapgen": "open_air" }
-  },
-  {
-    "type": "mapgen",
-    "method": "json",
     "om_terrain": "canyon_2way_bottom",
     "object": {
       "predecessor_mapgen": "field",
@@ -856,18 +834,6 @@
       "flags": [ "ERASE_ALL_BEFORE_PLACING_TERRAIN" ],
       "terrain": { "#": "t_null", " ": "t_open_air" }
     }
-  },
-  {
-    "type": "mapgen",
-    "method": "json",
-    "om_terrain": "canyon_3way_ground",
-    "object": { "fallback_predecessor_mapgen": "field" }
-  },
-  {
-    "type": "mapgen",
-    "method": "json",
-    "om_terrain": "canyon_3way",
-    "object": { "predecessor_mapgen": "open_air" }
   },
   {
     "type": "mapgen",
