@@ -73,6 +73,7 @@ void swap_letters();
 * pressed, false for "quit" input.
 * @return False if confirm_message is empty or QUIT input was pressed.
 */
+#if defined(IMGUI)
 class compare_item_menu : public cataimgui::window
 {
     public:
@@ -92,6 +93,7 @@ class compare_item_menu : public cataimgui::window
         std::vector<iteminfo> second_info;
         cataimgui::scroll s = cataimgui::scroll::none;
 };
+#endif
 bool compare_items( const item &first, const item &second,
                     const std::string &confirm_message = "" );
 

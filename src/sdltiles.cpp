@@ -73,9 +73,11 @@
 #include "uistate.h"
 #include "ui_manager.h"
 #include "wcwidth.h"
+#if defined(IMGUI)
 #include "cata_imgui.h"
 
 std::unique_ptr<cataimgui::client> imclient;
+#endif
 
 #if defined(__linux__)
 #   include <cstdlib> // getenv()/setenv()
@@ -433,7 +435,9 @@ static void WinCreate()
         geometry = std::make_unique<DefaultGeometryRenderer>();
     }
 
+#if defined(IMGUI)
     imclient = std::make_unique<cataimgui::client>( renderer, window, geometry );
+#endif
 }
 
 static void WinDestroy()
@@ -441,7 +445,9 @@ static void WinDestroy()
 #if defined(__ANDROID__)
     touch_joystick.reset();
 #endif
+#if defined(IMGUI)
     imclient.reset();
+#endif
     shutdown_sound();
     tilecontext.reset();
     gamepad::quit();
@@ -2960,7 +2966,9 @@ static void CheckMessages()
     bool render_target_reset = false;
 
     while( SDL_PollEvent( &ev ) ) {
+#if defined(IMGUI)
         imclient->process_input( &ev );
+#endif
         switch( ev.type ) {
             case SDL_WINDOWEVENT:
                 switch( ev.window.event ) {
@@ -3766,7 +3774,9 @@ void catacurses::init_interface()
                    windowsPalette, fl.overmap_typeface, fl.overmap_fontsize, fl.fontblending );
     stdscr = newwin( get_terminal_height(), get_terminal_width(), point::zero );
     //newwin calls `new WINDOW`, and that will throw, but not return nullptr.
+#if defined(IMGUI)
     imclient->load_fonts( gui_font, font, windowsPalette, fl.gui_typeface, fl.typeface );
+#endif
 #if defined(__ANDROID__)
     // Make sure we initialize preview_terminal_width/height to sensible values
     preview_terminal_width = TERMINAL_WIDTH * fontwidth;
