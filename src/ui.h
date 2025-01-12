@@ -41,8 +41,13 @@ const int UILIST_TIMEOUT = -1028;
 const int UILIST_ADDITIONAL = -1029;
 const int MENU_AUTOASSIGN = -1;
 
+#if defined(IMGUI)
 class string_input_popup_imgui;
 class uilist_impl;
+#else
+class string_input_popup;
+class ui_adaptor;
+#endif
 
 catacurses::window new_centered_win( int nlines, int ncols );
 
@@ -170,6 +175,10 @@ struct uilist_entry {
                                              explicit uilist_entry( Enum e, Args && ... args ) :
                                                  uilist_entry( static_cast<int>( e ), std::forward<Args>( args )... )
         {}
+
+#if !defined(IMGUI)
+        std::optional<inclusive_rectangle<point>> drawn_rect;
+#endif
 
     public:
         const std::string &_txt_nocolor();  // what it says on the tin
@@ -299,7 +308,12 @@ class uilist // NOLINT(cata-xy)
         // Calls calc_data() and initialize the window
         void setup();
         // initialize the window or reposition it after screen size change.
+#if defined(IMGUI)
         void reposition();
+#else
+        void reposition( ui_adaptor &ui );
+        void show( ui_adaptor &ui );
+#endif
         bool scrollby( int scrollby );
         void query( bool loop = true, int timeout = 50, bool allow_unfiltered_hotkeys = false );
         void filterlist();
@@ -399,7 +413,11 @@ class uilist // NOLINT(cata-xy)
 
         void reset();
 
+#if defined(IMGUI)
         shared_ptr_fast<uilist_impl> create_or_get_ui();
+#else
+        shared_ptr_fast<ui_adaptor> create_or_get_ui_adaptor();
+#endif
         // NOLINTNEXTLINE(google-explicit-constructor)
         operator int() const;
 
@@ -408,6 +426,16 @@ class uilist // NOLINT(cata-xy)
         // This function assumes it's being called from `query` and should
         // not be made public.
         void inputfilter();
+#if !defined(IMGUI)
+        std::unique_ptr<scrollbar> uilist_scrollbar;
+        void apply_scrollbar();
+        enum class handle_mouse_result_t {
+            unhandled, handled, confirmed
+        };
+        handle_mouse_result_t handle_mouse( const input_context &ctxt,
+                                            const std::string &ret_act,
+                                            bool loop );
+#endif
 
     public:
         // Parameters
@@ -430,7 +458,24 @@ class uilist // NOLINT(cata-xy)
 
         uilist_callback *callback;
 
+#if defined(IMGUI)
         std::optional<cataimgui::bounds> desired_bounds;
+#endif
+        pos_scalar w_x_setup;
+        pos_scalar w_y_setup;
+        size_scalar w_width_setup;
+        size_scalar w_height_setup;
+
+        int textwidth = 0;
+
+        size_scalar pad_left_setup;
+        size_scalar pad_right_setup;
+
+        // Maximum number of lines to be allocated for displaying descriptions.
+        // This only serves as a hint, not a hard limit, so the number of lines
+        // may still exceed this value when for example the description text is
+        // long enough.
+        int desc_lines_hint = 0;
         bool desc_enabled = false;
 
         bool filtering = false;
@@ -459,10 +504,23 @@ class uilist // NOLINT(cata-xy)
         // TODO make private
         catacurses::window window;
 
+#if !defined(IMGUI)
+        std::vector<std::string> textformatted;
+
+        int w_x = 0;
+        int w_y = 0;
+        int w_width = 0;
+        int w_height = 0;
+
+        int pad_left = 0;
+        int pad_right = 0;
+#endif
+
         int vshift = 0;
         int fselected = 0; // -1 as sentinel value for no filtered entries to select from
 
     private:
+#if defined(IMGUI)
         ImVec2 calculated_menu_size;
         cataimgui::bounds calculated_bounds;
         float calculated_hotkey_width;
@@ -470,19 +528,32 @@ class uilist // NOLINT(cata-xy)
         float calculated_secondary_width;
         float extra_space_left;
         float extra_space_right;
+#endif
         std::vector<int> fentries;
         std::map<input_event, int, std::function<bool( const input_event &, const input_event & )>>
         keymap { input_event::compare_type_mod_code };
 
+#if defined(IMGUI)
         weak_ptr_fast<uilist_impl> ui;
 
         std::unique_ptr<string_input_popup_imgui> filter_popup;
+#else
+        weak_ptr_fast<ui_adaptor> ui;
+
+        std::unique_ptr<string_input_popup> filter_popup;
+#endif
         std::string filter;
 
         int max_entry_len = 0;
         int max_column_len = 0;
 
         int vmax = 0;
+
+#if !defined(IMGUI)
+        int desc_lines = 0;
+        int category_lines = 0;
+        int find_entry_by_coordinate( const point &p ) const;
+#endif
 
         bool started = false;
         bool recalc_start = false;
@@ -697,5 +768,4 @@ bool navigate_ui_list( const std::string &action, V &val, int page_delta, S size
  */
 std::pair<int, int> subindex_around_cursor( int num_entries, int available_space, int cursor_pos,
         bool focused = true );
-
 #endif // CATA_SRC_UI_H

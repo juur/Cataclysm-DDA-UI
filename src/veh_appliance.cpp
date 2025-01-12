@@ -197,6 +197,7 @@ void veh_app_interact::init_ui_windows()
     //NOLINTNEXTLINE(cata-use-named-point-constants)
     w_info = catacurses::newwin( height_info, width_info, topleft + point( 1, 1 ) );
 
+#if defined(IMGUI)
     // Try to align the imgui window to be below the header.
     // to that end, we have some awkward math translating character positions to screen positions here:
     ImVec2 text_metrics = { ImGui::CalcTextSize( "X" ).x, ImGui::GetTextLineHeight() };
@@ -207,7 +208,12 @@ void veh_app_interact::init_ui_windows()
                              size.x,  // align the width of the input to be the same as the header
                              -1,      // but let uilist choose the height as it pleases.
                            };
-
+#else
+    const int width_input = win_width;
+    imenu.w_width_setup = width_input;
+    imenu.w_x_setup = topleft.x;
+    imenu.w_y_setup = topleft.y + height_info;
+#endif
     imenu.allow_cancel = true;
     imenu.border_color = c_white;
     imenu.setup();
@@ -655,7 +661,11 @@ void veh_app_interact::app_loop()
             ui.reset();
             shared_ptr_fast<ui_adaptor> current_ui = create_or_get_ui_adaptor();
             ui_manager::redraw();
+#if defined(IMGUI)
             shared_ptr_fast<uilist_impl> input_ui = imenu.create_or_get_ui();
+#else
+            shared_ptr_fast<ui_adaptor> input_ui = imenu.create_or_get_ui_adaptor();
+#endif
             imenu.query();
         }
 

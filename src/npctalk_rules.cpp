@@ -14,13 +14,17 @@
 #include <unordered_set>
 #include <vector>
 
+#if defined(IMGUI)
 #include "cata_imgui.h"
+#endif
 #include "dialogue.h"
 #include "game.h"
 #include "npctalk.h"
 #include "ui_manager.h"
+#if defined(IMGUI)
 #include "imgui/imgui.h"
 #include "imgui/imgui_internal.h"
+#endif
 
 static std::map<cbm_recharge_rule, std::string> recharge_map = {
     {cbm_recharge_rule::CBM_RECHARGE_ALL, "<ally_rule_cbm_recharge_all_text>" },
@@ -55,6 +59,7 @@ static std::map<aim_rule, std::string> aim_rule_map = {
     {aim_rule::STRICTLY_PRECISE, "<ally_rule_aim_strictly_precise>" },
 };
 
+#if defined(IMGUI)
 void follower_rules_ui::draw_follower_rules_ui( npc *guy )
 {
     input_context ctxt;
@@ -439,3 +444,9 @@ void follower_rules_ui_impl::draw_controls()
 
     ImGui::InvisibleButton( "BOTTOM_OF_WINDOW_KB_SCROLL_SELECTABLE", ImVec2( 1.0, 1.0 ) );
 }
+#else
+void follower_rules_ui::draw_follower_rules_ui( npc *guy )
+{
+    assert( guy != NULL );
+}
+#endif

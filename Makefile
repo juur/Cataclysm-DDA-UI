@@ -167,8 +167,13 @@ CHKJSON_BIN = $(BUILD_PREFIX)chkjson
 BINDIST_DIR = $(BUILD_PREFIX)bindist
 BUILD_DIR = $(CURDIR)
 SRC_DIR = src
+ifndef IMGUI
+  IMGUI = 1
+endif
+ifeq ($(IMGUI), 1)
 IMGUI_DIR = $(SRC_DIR)/third-party/imgui
 IMTUI_DIR = $(SRC_DIR)/third-party/imtui
+endif
 LOCALIZE = 1
 ASTYLE_BINARY = astyle
 
@@ -931,6 +936,27 @@ else
 endif
 THIRD_PARTY_SOURCES := $(wildcard $(SRC_DIR)/third-party/flatbuffers/*.cpp)
 HEADERS := $(wildcard $(SRC_DIR)/*.h)
+ifeq ($(IMGUI), 0)
+  # ImGui files we don't want/need
+  BAD_IMGUI_SOURCES := $(SRC_DIR)/cata_imgui.cpp \
+                       $(SRC_DIR)/input_popup.cpp \
+                       $(SRC_DIR)/ui_iteminfo.cpp \
+                       $(SRC_DIR)/text.cpp \
+                       $(SRC_DIR)/imgui_demo.cpp \
+                       $(SRC_DIR)/ui_extended_description.cpp
+  BAD_IMGUI_HEADERS := $(SRC_DIR)/input_popup.h \
+                       $(SRC_DIR)/ui_iteminfo.h \
+                       $(SRC_DIR)/text.h \
+                       $(SRC_DIR)/imgui_demo.h \
+                       $(SRC_DIR)/ui_extended_description.h
+else
+  # non-ImGui files that ImGui doesn't need/want
+  BAD_IMGUI_SOURCES := $(SRC_DIR)/descriptions.cpp \
+                       $(SRC_DIR)/imgui_facade.cpp
+  BAD_IMGUI_HEADERS := $(SRC_DIR)/imgui_facade.h
+endif
+SOURCES := $(filter-out $(BAD_IMGUI_SOURCES), $(SOURCES))
+HEADERS := $(filter-out $(BAD_IMGUI_HEADERS), $(HEADERS))
 OBJECT_CREATOR_SOURCES := $(wildcard $object_creator/*.cpp)
 OBJECT_CREATOR_HEADERS := $(wildcard $object_creator/*.h)
 TESTSRC := $(wildcard tests/*.cpp)
@@ -960,16 +986,21 @@ ASTYLE_SOURCES := $(sort \
 # Third party sources should not be astyle'd
 SOURCES += $(THIRD_PARTY_SOURCES)
 
+ifeq ($(IMGUI), 1)
 IMGUI_SOURCES = $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_demo.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_stdlib.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp
 ifeq ($(SDL), 1)
 	IMGUI_SOURCES += $(IMGUI_DIR)/imgui_freetype.cpp
 	IMGUI_SOURCES += $(IMGUI_DIR)/imgui_impl_sdl2.cpp $(IMGUI_DIR)/imgui_impl_sdlrenderer2.cpp
+	DEFINES += -DIMGUI
 else
 	IMGUI_SOURCES += $(IMTUI_DIR)/imtui-impl-ncurses.cpp $(IMTUI_DIR)/imtui-impl-text.cpp
-	DEFINES += -DIMTUI
+	DEFINES += -DIMTUI -DIMGUI
 endif
 
 SOURCES += $(IMGUI_SOURCES)
+else
+	DEFINES += -DIMGUI_DISABLE
+endif
 
 _OBJS = $(SOURCES:$(SRC_DIR)/%.cpp=%.o)
 ifeq ($(TARGETSYSTEM),WINDOWS)
@@ -1093,11 +1124,13 @@ $(ODIR)/%.inc: $(SRC_DIR)/%.cpp
 includes: $(OBJS:.o=.inc)
 	+make -C tests includes
 
+ifeq ($(IMGUI), 1)
 $(ODIR)/third-party/imgui/%.o: $(IMGUI_DIR)/%.cpp
 	$(CXX) $(CPPFLAGS) $(DEFINES) $(CXXFLAGS) -w -MMD -MP -c $< -o $@
 
 $(ODIR)/third-party/imtui/%.o: $(IMTUI_DIR)/%.cpp
 	$(CXX) $(CPPFLAGS) $(DEFINES) $(CXXFLAGS) -w -MMD -MP -c $< -o $@
+endif
 
 $(ODIR)/%.o: $(SRC_DIR)/%.cpp $(PCH_P)
 	$(CXX) $(CPPFLAGS) $(DEFINES) $(CXXFLAGS) -MMD -MP $(PCHFLAGS) -c $< -o $@
