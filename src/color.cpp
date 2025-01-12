@@ -29,10 +29,12 @@
 #include "ui_manager.h"
 #include "cata_imgui.h"
 
+#if defined(IMGUI)
 nc_color::operator ImVec4()
 {
     return cataimgui::imvec4_from_color( *this );
 }
+#endif
 
 void nc_color::serialize( JsonOut &jsout ) const
 {
@@ -403,7 +405,7 @@ void color_manager::load_default()
         add_color( def_c_dark_gray_yellow, "c_dark_gray_yellow", color_pair( 78 ), def_c_yellow );
         add_color( def_c_dark_gray_magenta, "c_dark_gray_magenta", color_pair( 77 ), def_c_pink );
         add_color( def_c_dark_gray_cyan, "c_dark_gray_cyan", color_pair( 76 ), def_c_light_cyan );
-#if !(defined(TILES) || defined(WIN32))
+#if defined(IMGUI) && (!(defined(TILES) || defined(WIN32)))
         imclient->set_alloced_pair_count( 79 );
 #endif
     } else {
@@ -416,7 +418,7 @@ void color_manager::load_default()
         add_color( def_c_dark_gray_yellow, "c_dark_gray_yellow", color_pair( 48 ).bold(), def_c_yellow );
         add_color( def_c_dark_gray_magenta, "c_dark_gray_magenta", color_pair( 56 ).bold(), def_c_pink );
         add_color( def_c_dark_gray_cyan, "c_dark_gray_cyan", color_pair( 64 ).bold(), def_c_light_cyan );
-#if !(defined(TILES) || defined(WIN32))
+#if defined(IMGUI) && (!(defined(TILES) || defined(WIN32)))
         imclient->set_alloced_pair_count( 71 );
 #endif
     }

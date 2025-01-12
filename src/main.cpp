@@ -59,7 +59,12 @@
 #include "translations.h"
 #include "type_id.h"
 #include "ui_manager.h"
+#if defined(IMGUI)
 #include "cata_imgui.h"
+#endif
+#if defined(MACOSX) || defined(__CYGWIN__)
+#   include <unistd.h> // getpid()
+#endif
 
 #if defined(EMSCRIPTEN)
 #include <emscripten.h>
@@ -158,7 +163,9 @@ void exit_handler( int s )
         signal( SIGABRT, SIG_DFL );
 #endif
 
+#if defined(IMGUI)
         imclient.reset();
+#endif
         exit( exit_status );
     }
     inp_mngr.set_timeout( old_timeout );
@@ -800,7 +807,9 @@ int main( int argc, const char *argv[] )
     }
 
     // Load the colors of ImGui to match the colors set by the user.
+#if defined(IMGUI)
     cataimgui::init_colors();
+#endif
 
     // Override existing settings from cli  options
     if( cli.disable_ascii_art ) {
@@ -837,8 +846,10 @@ int main( int argc, const char *argv[] )
 
 #if defined(LOCALIZE)
     if( get_option<std::string>( "USE_LANG" ).empty() && !SystemLocale::Language().has_value() ) {
+#if defined(IMGUI)
         imclient->new_frame(); // we have to prime the pump, because of reasons
         imclient->end_frame();
+#endif
         const std::string lang = select_language();
         get_options().get_option( "USE_LANG" ).setValue( lang );
         set_language_from_options();
