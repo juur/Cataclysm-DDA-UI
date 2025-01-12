@@ -16,8 +16,10 @@
 #include "avatar.h"
 #include "bodypart.h"
 #include "cached_options.h"
-#include "cata_imgui.h"
 #include "catacharset.h"
+#if defined(IMGUI)
+#include "cata_imgui.h"
+#endif
 #include "character.h"
 #include "coordinates.h"
 #include "creature_tracker.h"
@@ -46,6 +48,10 @@
 #include "itype.h"
 #include "magic.h"
 #include "magic_enchantment.h"
+#if defined(IMGUI)
+#include "imgui/imgui.h"
+#endif
+#include "line.h"
 #include "make_static.h"
 #include "map.h"
 #include "map_iterator.h"
@@ -1010,6 +1016,7 @@ int monster::print_info( const catacurses::window &w, int vStart, int vLines, in
     return ++vStart;
 }
 
+#if defined(IMGUI)
 void monster::print_info_imgui() const
 {
     ImGui::TextUnformatted( get_origin( type->src ).c_str() );
@@ -1089,6 +1096,7 @@ void monster::print_info_imgui() const
         }
     }
 }
+#endif
 
 std::vector<std::string> monster::extended_description() const
 {
