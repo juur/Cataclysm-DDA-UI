@@ -66,12 +66,14 @@ UNIT_UNITS = {
 GUNS_BLACKLIST = {
     # Well named, faction-specific weapon, with weird ammo
     "brogyeki",
+    "khuunaofaai",
     "exodii_plasma_fan",
     "exodii_plasma_projectile",
 }
 AMMO_BLACKLIST = {
     "arrow",
     "bolt",
+    "payload",
     "chemical_spray",
     "fishspear",
     "nail",
@@ -163,6 +165,7 @@ BAD_IDENTIFIERS = [
 TYPE_DESCRIPTORS = [
     "automagnum",
     "blunderbuss",
+    "cannon",
     "carbine",
     "coilgun",
     # Not great, but weird can get a pass
