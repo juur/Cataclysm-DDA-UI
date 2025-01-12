@@ -1878,6 +1878,8 @@ void Item_factory::init()
     add_iuse( "CALL_OF_TINDALOS", &iuse::call_of_tindalos );
     add_iuse( "BLOOD_DRAW", &iuse::blood_draw );
     add_iuse( "VIBE", &iuse::vibe );
+    add_iuse( "VIEW_PHOTOS", &iuse::view_photos );
+    add_iuse( "VIEW_RECIPES", &iuse::view_recipes );
     add_iuse( "HAND_CRANK", &iuse::hand_crank );
     add_iuse( "VORTEX", &iuse::vortex );
     add_iuse( "WASH_SOFT_ITEMS", &iuse::wash_soft_items );
@@ -2655,13 +2657,13 @@ void islot_milling::deserialize( const JsonObject &jo )
 static void load_memory_card_data( memory_card_info &mcd, const JsonObject &jo )
 {
     mcd.data_chance = jo.get_float( "data_chance", 1.0f );
-    mcd.on_read_convert_to = itype_id( jo.get_string( "on_read_convert_to" ) );
+    //mcd.on_read_convert_to = itype_id( jo.get_string( "on_read_convert_to" ) );
 
-    mcd.photos_chance = jo.get_float( "photos_chance", 0.0f );
-    mcd.photos_amount = jo.get_int( "photos_amount", 0 );
+    //mcd.photos_chance = jo.get_float( "photos_chance", 0.0f );
+    //mcd.photos_amount = jo.get_int( "photos_amount", 0 );
 
-    mcd.songs_chance = jo.get_float( "songs_chance", 0.0f );
-    mcd.songs_amount = jo.get_int( "songs_amount", 0 );
+    //mcd.songs_chance = jo.get_float( "songs_chance", 0.0f );
+    //mcd.songs_amount = jo.get_int( "songs_amount", 0 );
 
     mcd.recipes_chance = jo.get_float( "recipes_chance", 0.0f );
     mcd.recipes_amount = jo.get_int( "recipes_amount", 0 );
@@ -3162,6 +3164,12 @@ void Item_factory::load( islot_tool &slot, const JsonObject &jo, const std::stri
                 "entries!" );
         }
     }
+
+    if( jo.has_array( "edevice_mediums" ) ) {
+        for( std::string medium : jo.get_array( "edevice_mediums" ) ) {
+            slot.edevice_mediums.push_back( medium );
+        }
+    }
 }
 
 void Item_factory::load_tool( const JsonObject &jo, const std::string &src )
@@ -3285,6 +3293,18 @@ void Item_factory::load_book( const JsonObject &jo, const std::string &src )
         def.book->load( jo );
         load_basic_info( jo, def, src );
     }
+}
+
+void Item_factory::load_ememory_size( const JsonObject &jo, itype &def, const std::string &src )
+{
+    if( def.book ) {
+        if( def.ememory_size == 0_B ) {
+            //assuming a PDF, a conservative 10 KB per page
+            def.ememory_size = 10_KB * item::pages_in_book( def );
+            return;
+        }
+    }
+    assign( jo, "ememory_size", def.ememory_size );
 }
 
 void Item_factory::load( islot_comestible &slot, const JsonObject &jo, const std::string &src )
@@ -4189,7 +4209,6 @@ void Item_factory::load_basic_info( const JsonObject &jo, itype &def, const std:
     assign( jo, "integral_weight", def.integral_weight, strict, 0_gram );
     assign( jo, "volume", def.volume );
     assign( jo, "longest_side", def.longest_side );
-    assign( jo, "ememory_size", def.ememory_size, strict );
     assign( jo, "price", def.price, false, 0_cent );
     assign( jo, "price_postapoc", def.price_post, false, 0_cent );
     assign( jo, "stackable", def.stackable_, strict );
@@ -4242,6 +4261,7 @@ void Item_factory::load_basic_info( const JsonObject &jo, itype &def, const std:
     optional( jo, false, "fall_damage_reduction", def.fall_damage_reduction, 0 );
     assign( jo, "ascii_picture", def.picture_id );
     assign( jo, "repairs_with", def.repairs_with );
+    load_ememory_size( jo, def, src );
 
     if( jo.has_member( "thrown_damage" ) ) {
         def.thrown_damage = load_damage_instance( jo.get_array( "thrown_damage" ) );
