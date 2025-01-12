@@ -1607,19 +1607,33 @@ item_location game_menus::inv::ebookread( Character &you, item_location &ereader
 drop_locations game_menus::inv::ebooksave( Character &who, item_location &ereader )
 {
     std::set<itype_id> already_saved;
-    for( const item *ebook : ereader->ebooks() ) {
-        if( !ebook->is_book() ) {
-            debugmsg( "ebook type pocket contains non-book item %s", ebook->typeId().str() );
-            continue;
+    for( const item *efile : ereader->get_contents().efiles() ) {
+        if(
+            efile->is_estorable() &&
+            efile->is_ecopiable()
+            //already_saved.find(ebook->typeId()) == already_saved.end()
+        ) {
+            already_saved.insert( efile->typeId() );
         }
-
-        already_saved.insert( ebook->typeId() );
     }
+
     const inventory_filter_preset preset( [&who, &already_saved]( const item_location & loc ) {
-        return loc->is_book()
-               && loc->type->book->is_scannable
-               && !already_saved.count( loc->typeId() )
-               && loc->is_owned_by( who, true );
+
+        return ( loc->is_owned_by( who, true ) &&
+                 loc->is_estorable() &&
+                 loc->is_ecopiable() &&
+                 !already_saved.count( loc->typeId() ) );
+        //std::set<itype_id>::iterator found_type = already_saved.find(loc->typeId());
+        //bool type_not_saved = found_type == already_saved.end();
+        //add_msg_debug(debugmode::DF_ACT_EBOOK, string_format("efile found to be scanned: %s -- %s",
+        //  loc->display_name(), type_not_saved ? "true" : "false"));
+
+        //if (type_not_saved) {
+        //  //only one entry per type of copiable file needed
+        //  already_saved.insert(loc->typeId());
+        //  return true;
+        //}
+        //return false;
     } );
 
     const int available_charges = ereader->ammo_remaining();
@@ -1658,6 +1672,179 @@ drop_locations game_menus::inv::ebooksave( Character &who, item_location &ereade
         return drop_locations();
     }
     return inv_s.execute();
+}
+
+drop_locations game_menus::inv::edevice_select( Character &who, item_location &used_edevice,
+        bool browse, bool auto_include_used_edevice, bool no_usable, efile_action action )
+{
+    const inventory_filter_preset preset( [&]( const item_location & loc ) {
+        //make sure this is an edevice before we make edevice calls
+        if( loc->is_estorage() && loc->is_owned_by( who, true ) && who.sees( loc.position() ) ) {
+            efile_activity_actor::edevice_compatible compat =
+                efile_activity_actor::edevices_compatible( used_edevice, loc );
+            bool is_tool_has_charge = !loc->is_tool() || loc->ammo_sufficient( &who );
+            bool used_edevice_check = auto_include_used_edevice;
+            if( !auto_include_used_edevice ) {
+                used_edevice_check = loc != used_edevice;
+            }
+            bool check_usable = !no_usable || efile_activity_actor::edevice_usable( loc.get_item() );
+            bool browsed_equal = browse ==
+                                 loc->is_browsed(); //if browsing, unbrowsed edevices, otherwise browsed edevices
+            bool fast_transfer = ( compat == efile_activity_actor::edevice_compatible::ECOMPAT_FAST );
+            bool compatible = ( browse || //if browsing, no compatibility check
+                                ( action == EF_READ && fast_transfer ) || //if reading, only fast-compatible edevices
+                                compat != efile_activity_actor::edevice_compatible::ECOMPAT_NONE ); //otherwise, any compatible edevice
+            bool preset_bool = (
+                                   used_edevice_check
+                                   && compatible
+                                   && is_tool_has_charge
+                                   && browsed_equal );
+            if( preset_bool ) {
+                add_msg_debug( debugmode::DF_ACT_EBOOK, string_format( "found edevice %s", loc->display_name() ) );
+            }
+            return preset_bool;
+        }
+        return false;
+    } );
+
+    std::string action_name = io::enum_to_string<efile_action>( action );
+    std::string inv_title = _( action_name );
+    std::string used_device_name = ( efile_activity_actor::efile_action_exclude_used( action ) ) ?
+                                   string_format( _( " (using %s)?" ), used_edevice->display_name() ) : "?";
+
+    if( action == EF_READ || efile_activity_actor::efile_action_is_from( action ) ) {
+        inventory_pick_selector select_one_edevice( who, preset );
+        select_one_edevice.add_character_items( who );
+        select_one_edevice.add_nearby_items( PICKUP_RANGE );
+        inv_title += _( " which device" ) + used_device_name;
+        select_one_edevice.set_title( inv_title );
+        if( select_one_edevice.empty() ) {
+            popup( std::string( _( "You have no devices to " + action_name + "." ) ), PF_GET_KEY );
+            return drop_locations();
+        }
+        drop_locations returned_device;
+        item_location selected_device = select_one_edevice.execute();
+        if( selected_device ) {
+            returned_device.emplace_back( drop_location( selected_device, 1 ) );
+        }
+        return returned_device;
+    } else {
+        inventory_multiselector inv_s( who, preset, _( "Select devices to " + action_name ) );
+        inv_s.add_character_items( who );
+        inv_s.add_nearby_items( PICKUP_RANGE );
+        inv_title += _( " which devices" ) + used_device_name;
+        inv_s.set_title( inv_title );
+        if( inv_s.empty() ) {
+            popup( std::string( _( "You have no devices to " + action_name + "." ) ), PF_GET_KEY );
+            return drop_locations();
+        }
+        return inv_s.execute();
+    }
+}
+
+drop_locations game_menus::inv::efile_select( Character &who, item_location &used_edevice,
+        const std::vector<item_location> &target_edevices, efile_action action, bool from_used_edevice )
+{
+    item_location &selected_edevice = used_edevice;
+    item_location external_transfer_edevice;
+    bool copying = ( action == EF_COPY_FROM_THIS || action == EF_COPY_ONTO_THIS );
+    if( from_used_edevice ) {
+        //currently, only one e-device can be moved/copied from the used e-device
+        selected_edevice = target_edevices.front();
+    }
+
+    const inventory_filter_preset preset( [&copying]( const item_location & loc ) {
+        return item::is_efile( loc ) && ( !copying || loc->is_ecopiable() );
+    } );
+
+    const int available_charges = selected_edevice->ammo_remaining();
+    auto make_raw_stats = [&]( const std::vector<std::pair<item_location, int>> &locs ) {
+        std::vector<item_location> efiles;
+        efiles.reserve( locs.size() );
+        for( const auto &drop : locs ) {
+            for( int i = 0; i < drop.second; i++ ) {
+                efiles.emplace_back( drop.first );
+            }
+        }
+        time_duration required_time = 0_seconds;
+        units::ememory total_memory = 0_B;
+
+        bool edevice_slow_transfer = false;
+        for( const item_location &efile : efiles ) {
+            item_location efile_parent_device = efile.parent_item();
+            if( efile_activity_actor::edevices_compatible( selected_edevice, efile_parent_device ) !=
+                efile_activity_actor::edevice_compatible::ECOMPAT_FAST ) {
+                if( !efile_activity_actor::find_external_transfer_edevice( who, efile,
+                        selected_edevice, efile_parent_device ) ) {
+                    edevice_slow_transfer = true;
+                }
+            }
+            efile_transfer transfer( selected_edevice, efile_parent_device );
+            required_time += efile_activity_actor::efile_processing_time( efile, transfer, action, who );
+            total_memory += efile->ememory_size();
+        }
+        const int required_charges = required_time / efile_activity_actor::charge_per_transfer_time;
+
+        auto int_to_str = []( int val ) -> std::string {
+            return string_format( "%d", val );
+        };
+        const std::string ememory = string_format( "%s / %s", units::display( total_memory ),
+                                    units::display( selected_edevice->remaining_ememory() ) );
+        const std::string charges = string_join( display_stat( "", required_charges,
+                                    available_charges,
+                                    int_to_str ), "" );
+        const std::string time_label = !edevice_slow_transfer ?
+                                       _( "Estimated time:" ) :
+                                       colorize( _( "Estimated time (slow!):" ), c_yellow );
+        const std::string time = colorize( to_string( required_time, true ),
+                                           c_light_gray );
+        return inventory_selector::stats{ {
+                {{ _( "Processed / Available Memory: " ), ememory }},
+                {{ _( "Charges" ), charges }},
+                {{ time_label, time}}
+            } };
+    };
+
+    std::string action_name = efile_activity_actor::efile_action_name( action, false );
+
+    if( action == EF_READ ) {
+        inventory_pick_selector select_one_file( who, preset );
+        select_one_file.add_contained_efiles( used_edevice );
+        select_one_file.set_title( action_name + _( " which files?" ) );
+        if( select_one_file.empty() ) {
+            return drop_locations();
+        }
+        return { { select_one_file.execute(), 1 } };
+    }
+    inventory_multiselector select_multiple_efiles( who, preset, _( "Files selected:" ),
+            make_raw_stats, /*allow_select_contained=*/true );
+    if( from_used_edevice ) {
+        select_multiple_efiles.add_contained_efiles( used_edevice );
+    } else {
+        for( item_location loc : target_edevices ) {
+            select_multiple_efiles.add_contained_efiles( loc );
+        }
+    }
+    if( select_multiple_efiles.empty() ) {
+        popup( std::string( _( "You have no files to " + action_name + "." ) ), PF_GET_KEY );
+        return drop_locations();
+    }
+    select_multiple_efiles.set_title( _( "Select files to " + action_name ) );
+    bool done = false;
+    drop_locations selected_efiles;
+    while( !done ) {
+        selected_efiles = select_multiple_efiles.execute();
+        units::ememory total_ememory = 0_B;
+        for( drop_location &d : selected_efiles ) {
+            total_ememory += d.first->occupied_ememory();
+        }
+        if( total_ememory < used_edevice->remaining_ememory() || selected_efiles.empty() ) {
+            done = true;
+        } else {
+            popup( std::string( _( "Selected file size exceeds available storage size." ) ), PF_GET_KEY );
+        }
+    }
+    return selected_efiles;
 }
 
 class steal_inventory_preset : public pickup_inventory_preset
