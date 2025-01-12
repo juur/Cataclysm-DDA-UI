@@ -10,14 +10,18 @@
 #include <vector>
 
 #include "auto_pickup.h"
+#if defined(IMGUI)
 #include "cata_imgui.h"
+#endif
 #include "character.h"
 #include "character_id.h"
 #include "color.h"
 #include "debug.h"
 #include "game.h"
+#if defined(IMGUI)
 #include "imgui/imgui.h"
 #include "imgui/imgui_internal.h"
+#endif
 #include "input_context.h"
 #include "input_enums.h"
 #include "npc.h"
@@ -59,6 +63,7 @@ static std::map<aim_rule, std::string> aim_rule_map = {
     {aim_rule::STRICTLY_PRECISE, "<ally_rule_aim_strictly_precise>" },
 };
 
+#if defined(IMGUI)
 void follower_rules_ui::draw_follower_rules_ui( npc *guy )
 {
     input_context ctxt;
@@ -443,3 +448,9 @@ void follower_rules_ui_impl::draw_controls()
 
     ImGui::InvisibleButton( "BOTTOM_OF_WINDOW_KB_SCROLL_SELECTABLE", ImVec2( 1.0, 1.0 ) );
 }
+#else
+void follower_rules_ui::draw_follower_rules_ui( npc *guy )
+{
+    assert( guy != NULL );
+}
+#endif
