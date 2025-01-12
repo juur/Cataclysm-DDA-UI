@@ -17,7 +17,9 @@
 #include "enums.h"
 #include "flexbuffer_json.h"
 #include "game.h"
+#if defined(IMGUI)
 #include "imgui/imgui.h"
+#endif
 #include "json.h"
 #include "map.h"
 #include "map_iterator.h"
@@ -39,7 +41,7 @@ static bool popup_string( std::string &result, std::string &title )
     popup.title( title );
     popup.text( "" ).only_digits( false );
     popup.query();
-    if( popup.canceled() ) {
+    if( popup.cancelled() ) {
         return false;
     }
     result = popup.text();
@@ -165,6 +167,7 @@ class teleporter_callback : public uilist_callback
         std::map<int, tripoint_abs_omt> index_pairs;
     public:
         explicit teleporter_callback( std::map<int, tripoint_abs_omt> &ip ) : index_pairs( ip ) {}
+#if defined(IMGUI)
         float desired_extra_space_right( ) override {
             return 33 * ImGui::CalcTextSize( "X" ).x;
         }
@@ -177,6 +180,27 @@ class teleporter_callback : public uilist_callback
                 ImGui::Text( _( "Distance: %d %s" ), dist, index_pairs[entnum].to_string().c_str() );
                 overmap_ui::draw_overmap_chunk_imgui( player_character, index_pairs[entnum], 29, 21 );
             }
+#else
+        void refresh( uilist *menu ) override {
+            const int entnum = menu->selected;
+            const int start_x = menu->w_width - menu->pad_right;
+            mvwputch( menu->window, point( start_x, 0 ), c_magenta, LINE_OXXX );
+            mvwputch( menu->window, point( start_x, menu->w_height - 1 ), c_magenta, LINE_XXOX );
+            for( int i = 1; i < menu->w_height - 1; i++ ) {
+                mvwputch( menu->window, point( start_x, i ), c_magenta, LINE_XOXO );
+            }
+            if( entnum >= 0 && static_cast<size_t>( entnum ) < index_pairs.size() ) {
+                avatar &player_character = get_avatar();
+                overmap_ui::draw_overmap_chunk( menu->window, player_character, index_pairs[entnum],
+                                                point( start_x + 1, 1 ),
+                                                29, 21 );
+                int dist = rl_dist( player_character.global_omt_location(), index_pairs[entnum] );
+                mvwprintz( menu->window, point( start_x + 2, 1 ), c_white,
+                           string_format( _( "Distance: %d %s" ), dist,
+                                          index_pairs[entnum].to_string() ) );
+            }
+            wnoutrefresh( menu->window );
+#endif
         }
 };
 
@@ -185,23 +209,35 @@ std::optional<tripoint_abs_omt> teleporter_list::choose_teleport_location()
     std::optional<tripoint_abs_omt> ret = std::nullopt;
 
     uilist teleport_selector;
+#if defined(IMGUI)
     teleport_selector.desired_bounds = {
         -1.0,
             -1.0,
             std::max( 80, TERMX * 3 / 8 ) *ImGui::CalcTextSize( "X" ).x,
             clamp( static_cast<int>( known_teleporters.size() ), 24, TERMY * 9 / 10 ) *ImGui::GetTextLineHeightWithSpacing(),
         };
+#else
+    teleport_selector.w_height_setup = 24;
+    int column_width = 25;
+#endif
 
     int index = 0;
     std::map<int, tripoint_abs_omt> index_pairs;
     for( const std::pair<const tripoint_abs_omt, std::string> &gate : known_teleporters ) {
         teleport_selector.addentry( index, true, 0, gate.second );
+#if !defined(IMGUI)
+        column_width = std::max( column_width, utf8_width( gate.second ) );
+#endif
         index_pairs.emplace( index, gate.first );
         index++;
     }
     teleporter_callback cb( index_pairs );
     teleport_selector.callback = &cb;
     teleport_selector.text = _( "Choose Translocation Location" );
+#if !defined(IMGUI)
+    teleport_selector.w_width_setup = 38 + column_width;
+    teleport_selector.pad_right_setup = 33;
+#endif
 
     teleport_selector.query();
 

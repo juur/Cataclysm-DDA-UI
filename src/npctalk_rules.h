@@ -6,9 +6,13 @@
 #include <map>
 #include <string>
 
+#if defined(IMGUI)
 #include "cata_imgui.h"
+#endif
 #include "game_constants.h"
+#if defined(IMGUI)
 #include "imgui/imgui.h"
+#endif
 #include "translations.h"
 
 class input_context;
@@ -17,11 +21,14 @@ struct input_event;
 
 class follower_rules_ui
 {
+#if defined(IMGUI)
         friend class follower_rules_ui_impl;
+#endif
     public:
         void draw_follower_rules_ui( npc *guy );
 };
 
+#if defined(IMGUI)
 class follower_rules_ui_impl : public cataimgui::window
 {
     public:
@@ -67,5 +74,5 @@ class follower_rules_ui_impl : public cataimgui::window
     protected:
         void draw_controls() override;
 };
-
+#endif
 #endif // CATA_SRC_NPCTALK_RULES_H

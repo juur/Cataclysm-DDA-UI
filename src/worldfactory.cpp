@@ -193,12 +193,20 @@ static std::optional<std::string> prompt_world_name( const std::string &title,
                                _( "Press [<color_c_yellow>%s</color>] to randomize the world name." ),
                                ctxt.get_desc( "PICK_RANDOM_WORLDNAME", 1U ) ) );
 
-    popup.add_callback( callback_input{ "PICK_RANDOM_WORLDNAME" }, [&popup]() {
+#if defined(IMGUI)
+    popup.add_callback( callback_input { "PICK_RANDOM_WORLDNAME" }, [&popup]() {
+#else
+    popup.add_callback( "PICK_RANDOM_WORLDNAME", [&popup]() {
+#endif
         popup.set_text( get_next_valid_worldname() );
         return true;
     } );
     std::string message = popup.query();
+#if defined(IMGUI)
     return message;
+#else
+    return !popup.cancelled() ? std::optional<std::string>( message ) : std::optional<std::string>();
+#endif
 }
 
 int worldfactory::show_worldgen_advanced( WORLD *world )
@@ -1285,7 +1293,7 @@ int worldfactory::show_worldgen_tab_modselection( const catacurses::window &win,
             ui_manager::redraw();
             fpopup->query_string( /*loop=*/false );
 
-            if( fpopup->canceled() ) {
+            if( fpopup->cancelled() ) {
                 apply_filter( old_filter );
                 break;
             } else if( fpopup->confirmed() ) {

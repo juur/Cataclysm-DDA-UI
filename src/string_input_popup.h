@@ -111,6 +111,9 @@ class string_input_popup // NOLINT(cata-xy)
     public:
         string_input_popup();
         ~string_input_popup();
+#if !defined(IMGUI)
+        string_input_popup( int something, const std::string &value = nullptr );
+#endif
         /**
          * The title: short string before the actual input field.
          * It's optional, default is an empty string.
@@ -247,7 +250,7 @@ class string_input_popup // NOLINT(cata-xy)
          * @return @ref text()
          */
         /**@{*/
-        void query( bool loop = true, bool draw_only = false );
+        const std::string &query( bool loop = true, bool draw_only = false );
         int query_int( bool loop = true, bool draw_only = false );
         int64_t query_int64_t( bool loop = true, bool draw_only = false );
         const std::string &query_string( bool loop = true, bool draw_only = false );
@@ -257,7 +260,7 @@ class string_input_popup // NOLINT(cata-xy)
          * If the input was finished via the ENTER key (or similar), this will
          * return `false`.
          */
-        bool canceled() const {
+        bool cancelled() const {
             return _canceled;
         }
         /**
@@ -295,6 +298,15 @@ class string_input_popup // NOLINT(cata-xy)
 
         // Register additional actions
         std::vector<std::pair<std::string, translation>> custom_actions;
+
+#if !defined(IMGUI)
+        /* ImgUi compat */
+        void set_label( const std::string &txt );
+        void set_description( const std::string &desc, const nc_color &default_color = c_green,
+                              bool monofont = false );
+        void set_max_input_length( int length );
+        void set_text( const std::string &txt );
+#endif
 };
 
 struct string_input_params {
@@ -306,4 +318,8 @@ struct string_input_params {
     bool only_digits = false;
     static string_input_params parse_string_input_params( const JsonObject &jo );
 };
+
+#if !defined(IMGUI)
+#define string_input_popup_imgui string_input_popup
+#endif
 #endif // CATA_SRC_STRING_INPUT_POPUP_H
