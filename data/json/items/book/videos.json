@@ -1,0 +1,38 @@
+{
+	"abstract": "efile_video",
+	"copy-from": "abstract_efile",
+	"type": "BOOK",
+	"symbol": "o",
+	"name": "abstract video",
+	"description": "An abstract video file, implemented as a book.",
+	"ememory_size": "128 MB",
+	"intelligence": 5,
+	"looks_like": "story_book",
+	"color": "light_cyan"
+},
+{
+	"id": "video_fic_casablanca",
+	"type": "BOOK",
+	"copy-from": "efile_video",
+	"name": { "str": "Casablanca" },
+	"description": "Widely regarded as one of the greatest films in history, this romantic drama features Rick Blaine (Humphrey Bogart), who must decide between reuniting with his lover or helping her escape the Nazis during World War II.",
+	"intelligence": 5,
+	"color": "light_cyan",
+	"time": "15 m",
+	"chapters": 4,
+	"fun": 2
+},
+{
+    "id": "video_manual_firstaid",
+    "type": "BOOK",
+	"copy-from": "efile_video",
+    "category": "manuals",
+    "name": { "str": "first aid training videos" },
+    "description": "A collection of videos from various medical authorities that demonstrate the basics of first aid, like wound dressing, CPR, and proper sanitary practices.",
+    "symbol": "?",
+    "color": "pink",
+    "skill": "firstaid",
+    "max_level": 3,
+    "time": "15 m",
+    "fun": 1
+  }

@@ -3,7 +3,7 @@
     "id": "camera",
     "type": "TOOL",
     "name": { "str": "camera" },
-    "description": "A point-and-shoot digital camera with a digital viewfinder, a backup 'iron-sight', and flash.  You can look at your photos on the digital screen, or transfer them with a memory card.",
+    "description": "A point-and-shoot digital camera with a digital viewfinder, a backup 'iron-sight', and flash.  You can look at your photos on the digital screen, or transfer them with any standard electronic device.",
     "weight": "907 g",
     "volume": "250 ml",
     "price": "200 USD",
@@ -14,16 +14,28 @@
     "ammo": [ "battery" ],
     "flags": [ "NO_UNLOAD", "NO_RELOAD", "WATER_BREAK_ACTIVE", "ELECTRONIC" ],
     "charges_per_use": 1,
+    "edevice_mediums": [ "sd", "usb" ],
     "use_action": [ "CAMERA", { "type": "link_up", "cable_length": 3, "charge_rate": "20 W" } ],
     "//": "swappable, but proprietary 80g Li-Ion battery",
-    "pocket_data": [ { "pocket_type": "MAGAZINE", "rigid": true, "ammo_restriction": { "battery": 50 } } ],
-    "melee_damage": { "bash": 1 }
+    "pocket_data": [
+      { "pocket_type": "MAGAZINE", "rigid": true, "ammo_restriction": { "battery": 50 } },
+      {
+        "pocket_type": "E_FILE_STORAGE",
+        "rigid": true,
+        "max_contains_volume": "1 ml",
+        "max_contains_weight": "1 g",
+        "weight_multiplier": 0.0,
+        "ememory_max": "32 GB"
+      }
+    ],
+    "melee_damage": { "bash": 1 },
+    "variables": { "browsed": "true" }
   },
   {
     "id": "camera_pro",
     "type": "TOOL",
     "name": { "str": "professional camera" },
-    "description": "A 35 mm digital SLR (single-lens reflex) camera with optical and digital viewfinders, a zoom lens with auto-focus and stabilizer, and flash.  You can view your photos on it or transfer them with a memory card.  Before the Cataclysm, you could have taken professional-grade photos using this.",
+    "description": "A 35 mm digital SLR (single-lens reflex) camera with optical and digital viewfinders, a zoom lens with auto-focus and stabilizer, and flash.  You can look at your photos on the digital screen or transfer them with any standard electronic device.  Before the Cataclysm, you could have taken professional-grade photos using this.",
     "weight": "2268 g",
     "volume": "1250 ml",
     "price": "8 kUSD",
@@ -33,11 +45,23 @@
     "color": "yellow",
     "ammo": [ "battery" ],
     "charges_per_use": 1,
+    "edevice_mediums": [ "sd", "usb" ],
     "use_action": [ "CAMERA", { "type": "link_up", "cable_length": 3, "charge_rate": "50 W" } ],
     "flags": [ "NO_UNLOAD", "NO_RELOAD", "CAMERA_PRO", "ALWAYS_TWOHAND", "WATER_BREAK_ACTIVE", "ELECTRONIC" ],
     "//": "swappable, but proprietary 160g Li-Ion battery",
-    "pocket_data": [ { "pocket_type": "MAGAZINE", "rigid": true, "ammo_restriction": { "battery": 100 } } ],
-    "melee_damage": { "bash": 1 }
+    "pocket_data": [
+      { "pocket_type": "MAGAZINE", "rigid": true, "ammo_restriction": { "battery": 100 } },
+      {
+        "pocket_type": "E_FILE_STORAGE",
+        "rigid": true,
+        "max_contains_volume": "1 ml",
+        "max_contains_weight": "1 g",
+        "weight_multiplier": 0.0,
+        "ememory_max": "64 GB"
+      }
+    ],
+    "melee_damage": { "bash": 1 },
+    "variables": { "browsed": "true" }
   },
   {
     "id": "cell_phone",
@@ -137,10 +161,10 @@
     "color": "blue",
     "ammo": [ "battery" ],
     "charges_per_use": 1,
+    "etransfer_rate": "30 MB",
+    "edevice_mediums": [ "sd", "usb", "phone" ],
     "use_action": [
-      "EINKTABLETPC",
-      "ELECTRICSTORAGE",
-      "EBOOKREAD",
+      "E_FILE_DEVICE",
       {
         "type": "transform",
         "menu_text": "Turn on the screen",
@@ -156,13 +180,15 @@
     "pocket_data": [
       { "pocket_type": "MAGAZINE", "rigid": true, "ammo_restriction": { "battery": 85 } },
       {
-        "pocket_type": "EBOOK",
+        "pocket_type": "E_FILE_STORAGE",
         "rigid": true,
         "max_contains_volume": "1 ml",
         "max_contains_weight": "1 g",
-        "weight_multiplier": 0.0
+        "weight_multiplier": 0.0,
+        "ememory_max": "32 GB"
       }
-    ]
+    ],
+    "variables": { "browsed": "false" }
   },
   {
     "type": "TOOL",
@@ -172,9 +198,7 @@
     "power_draw": "2 W",
     "revert_to": "eink_tablet_pc",
     "use_action": [
-      "EINKTABLETPC",
-      "ELECTRICSTORAGE",
-      "EBOOKREAD",
+      "E_FILE_DEVICE",
       {
         "ammo_scale": 0,
         "type": "transform",
@@ -187,6 +211,123 @@
     "tick_action": [ "EPIC_MUSIC" ],
     "//": "LIGHT_10 is the bare minimum for reading without penalties",
     "flags": [ "NO_UNLOAD", "NO_RELOAD", "LIGHT_10", "TRADER_AVOID", "WATCH", "WATER_BREAK", "ELECTRONIC" ]
+  },
+  {
+    "type": "TOOL",
+    "id": "usb_drive",
+    "symbol": ",",
+    "color": "white",
+    "name": { "str": "USB drive" },
+    "description": "A USB thumb drive.  Useful for holding electronic data.",
+    "price": "12 USD",
+    "price_postapoc": "10 cent",
+    "material": [ "plastic", "aluminum" ],
+    "weight": "4536 mg",
+    "volume": "4 ml",
+    "longest_side": "5 cm",
+    "etransfer_rate": "20 MB",
+    "edevice_mediums": [ "usb" ],
+    "pocket_data": [
+      { "pocket_type": "SOFTWARE", "max_contains_volume": "1 L", "max_contains_weight": "1 kg" },
+      {
+        "pocket_type": "E_FILE_STORAGE",
+        "rigid": true,
+        "max_contains_volume": "1 ml",
+        "max_contains_weight": "1 g",
+        "weight_multiplier": 0.0,
+        "ememory_max": "128 GB"
+      }
+    ],
+    "to_hit": { "grip": "bad", "length": "hand", "surface": "any", "balance": "clumsy" },
+    "//": "Based on https://www.amazon.com/dp/B015CH1PJU"
+  },
+  {
+    "type": "TOOL",
+    "id": "portable_hard_drive",
+    "symbol": ",",
+    "color": "white",
+    "name": { "str": "portable hard drive" },
+    "description": "A portable external hard drive, the best in affordable mass storage.  Useful for holding lots of electronic data.",
+    "price": "100 USD",
+    "price_postapoc": "50 cent",
+    "material": [ "plastic", "aluminum" ],
+    "weight": "190 g",
+    "volume": "138 ml",
+    "longest_side": "12 cm",
+    "etransfer_rate": "20 MB",
+    "edevice_mediums": [ "usb" ],
+    "pocket_data": [
+      { "pocket_type": "SOFTWARE", "max_contains_volume": "1 L", "max_contains_weight": "1 kg" },
+      {
+        "pocket_type": "E_FILE_STORAGE",
+        "rigid": true,
+        "max_contains_volume": "1 ml",
+        "max_contains_weight": "1 g",
+        "weight_multiplier": 0.0,
+        "ememory_max": "2 TB"
+      }
+    ],
+    "to_hit": { "grip": "bad", "length": "hand", "surface": "any", "balance": "clumsy" },
+    "//": "Based on https://www.amazon.com/Seagate-Portable-External-Hard-Drive/dp/B07CRG94G3"
+  },
+  {
+    "type": "TOOL",
+    "id": "memory_card",
+    "name": { "str": "memory card" },
+    "description": "A memory card, can be used to store data.",
+    "looks_like": "mobile_memory_card",
+    "weight": "1 g",
+    "volume": "1 ml",
+    "symbol": ",",
+    "color": "white",
+    "price": "10 USD",
+    "price_postapoc": "10 cent",
+    "material": [ "plastic" ],
+    "ascii_picture": "memory_card",
+    "flags": [ "MC_MOBILE" ],
+    "etransfer_rate": "12 MB",
+    "edevice_mediums": [ "sd" ],
+    "pocket_data": [
+      {
+        "pocket_type": "E_FILE_STORAGE",
+        "rigid": true,
+        "max_contains_volume": "1 ml",
+        "max_contains_weight": "1 g",
+        "weight_multiplier": 0.0,
+        "ememory_max": "64 GB"
+      }
+    ]
+  },
+  {
+    "type": "GENERIC",
+    "id": "memory_card_unread",
+    "copy-from": "memory_card",
+    "name": { "str": "memory card (unread)", "str_pl": "memory cards (unread)" },
+    "description": "A memory card, can be used to store data.  Looks like it has been in use, might be worth taking a look.",
+    "memory_card": {
+      "data_chance": 0.875,
+      "recipes_chance": 0.33,
+      "recipes_amount": 3,
+      "recipes_categories": [ "CC_AMMO", "CC_ARMOR", "CC_CHEM", "CC_ELECTRONIC", "CC_FOOD", "CC_WEAPON" ],
+      "recipes_level_max": 5
+    },
+    "pocket_data": [  ]
+  },
+  {
+    "type": "GENERIC",
+    "id": "memory_card_science",
+    "copy-from": "memory_card",
+    "name": { "str": "memory card (XEDRA)", "str_pl": "memory cards (XEDRA)" },
+    "description": "A memory card, can be used to store data.  This one has a label on which is written 'XEDRA' followed by a long string of numbers.",
+    "memory_card": {
+      "data_chance": 1.0,
+      "recipes_chance": 1.0,
+      "recipes_amount": 3,
+      "recipes_categories": [ "CC_CHEM" ],
+      "recipes_level_min": 6,
+      "secret_recipes": true
+    },
+    "pocket_data": [  ]
   },
   {
     "id": "electrohack",
@@ -341,7 +482,7 @@
     "type": "TOOL",
     "category": "tools",
     "name": { "str": "laptop computer" },
-    "description": "A portable computer, ubiquitous tool both before and after the cataclysm.  While it is little you can do with it nowadays, mostly from lack of internet, you still can load it with books (or even scan using frontal camera)",
+    "description": "A portable computer, a ubiquitous tool both before and after the cataclysm.  While you no longer have internet access, you still can load it with books and other useful software.",
     "//": "https://www.amazon.com/dp/B0D6Z664QC, battery is FRANGWAT01",
     "symbol": ",",
     "color": "dark_gray",
@@ -353,18 +494,12 @@
     "price_postapoc": "2 USD 50 cent",
     "ammo": [ "battery" ],
     "charges_per_use": 1,
+    "etransfer_rate": "30 MB",
+    "edevice_mediums": [ "sd", "usb", "phone" ],
     "use_action": [
-      "EINKTABLETPC",
+      "E_FILE_DEVICE",
       "EBOOKSAVE",
-      "EBOOKREAD",
-      "ELECTRICSTORAGE",
       "PORTABLE_GAME",
-      {
-        "type": "effect_on_conditions",
-        "menu_text": "Dig into local files and logs",
-        "description": "You can take a look at the local files stored on this laptop.",
-        "effect_on_conditions": [ "EOC_READ_LOCAL_FILES" ]
-      },
       {
         "target": "laptop_screen_lit",
         "msg": "You light up the screen.",
@@ -380,11 +515,12 @@
     "pocket_data": [
       { "pocket_type": "MAGAZINE", "rigid": true, "ammo_restriction": { "battery": 200 } },
       {
-        "pocket_type": "EBOOK",
+        "pocket_type": "E_FILE_STORAGE",
         "rigid": true,
         "max_contains_volume": "1 ml",
         "max_contains_weight": "1 g",
-        "weight_multiplier": 0.0
+        "weight_multiplier": 0.0,
+        "ememory_max": "1 TB"
       }
     ],
     "melee_damage": { "bash": 6 }
@@ -397,18 +533,9 @@
     "power_draw": "1 W",
     "revert_to": "laptop",
     "use_action": [
-      "EINKTABLETPC",
+      "E_FILE_DEVICE",
       "EBOOKSAVE",
-      "EBOOKREAD",
-      "ELECTRICSTORAGE",
       "PORTABLE_GAME",
-      {
-        "type": "effect_on_conditions",
-        "menu_text": "Dig into local files and logs",
-        "description": "You can take a look at the local files stored on this laptop.",
-        "//need_charges_msg": "The laptop's batteries need more charge.",
-        "effect_on_conditions": [ "EOC_READ_LOCAL_FILES" ]
-      },
       {
         "ammo_scale": 0,
         "target": "laptop",
@@ -594,21 +721,15 @@
     "color": "light_gray",
     "ammo": [ "battery" ],
     "charges_per_use": 1,
+    "etransfer_rate": "30 MB",
+    "edevice_mediums": [ "sd", "phone" ],
     "use_action": [
+      "E_FILE_DEVICE",
+      "EBOOKSAVE",
       "CAMERA",
       "MP3",
       "CALORIES_INTAKE_TRACKER",
       "PORTABLE_GAME",
-      "EINKTABLETPC",
-      "ELECTRICSTORAGE",
-      "EBOOKSAVE",
-      "EBOOKREAD",
-      {
-        "type": "effect_on_conditions",
-        "menu_text": "Check the system",
-        "description": "Check another applications and files.",
-        "effect_on_conditions": [ "EOC_SMARTPHONE_EOCS" ]
-      },
       {
         "target": "smart_phone_flashlight",
         "msg": "You activate the flashlight app.",
@@ -634,11 +755,12 @@
     "pocket_data": [
       { "pocket_type": "MAGAZINE", "rigid": true, "ammo_restriction": { "battery": 56 } },
       {
-        "pocket_type": "EBOOK",
+        "pocket_type": "E_FILE_STORAGE",
         "rigid": true,
         "max_contains_volume": "1 ml",
         "max_contains_weight": "1 g",
-        "weight_multiplier": 0.0
+        "weight_multiplier": 0.0,
+        "ememory_max": "256 GB"
       }
     ]
   },
@@ -651,11 +773,10 @@
     "power_draw": "300 mW",
     "revert_to": "smart_phone",
     "use_action": [
-      "MP3_DEACTIVATE",
-      "PORTABLE_GAME",
-      "EINKTABLETPC",
+      "E_FILE_DEVICE",
       "EBOOKSAVE",
-      "EBOOKREAD",
+      "PORTABLE_GAME",
+      "MP3_DEACTIVATE",
       { "type": "link_up", "cable_length": 3, "charge_rate": "20 W" }
     ],
     "tick_action": [ "MP3_ON" ],
@@ -669,17 +790,9 @@
     "power_draw": "1500 mW",
     "revert_to": "smart_phone",
     "use_action": [
-      "PORTABLE_GAME",
-      "EINKTABLETPC",
+      "E_FILE_DEVICE",
       "EBOOKSAVE",
-      "EBOOKREAD",
-      {
-        "type": "effect_on_conditions",
-        "menu_text": "Dig into local files and logs",
-        "description": "You can take a look at the local files stored on this smartphone.",
-        "//need_charges_msg": "The smartphone's charge is too low.",
-        "effect_on_conditions": [ "EOC_READ_LOCAL_FILES" ]
-      },
+      "PORTABLE_GAME",
       {
         "ammo_scale": 0,
         "target": "smart_phone",

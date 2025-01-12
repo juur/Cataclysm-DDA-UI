@@ -46,6 +46,8 @@ static const furn_str_id furn_test_f_oxytorch2( "test_f_oxytorch2" );
 static const furn_str_id furn_test_f_oxytorch3( "test_f_oxytorch3" );
 static const furn_str_id furn_test_f_prying1( "test_f_prying1" );
 
+static const item_group_id itemgroup_test_edevices( "test_edevices" );
+
 static const itype_id itype_book_binder( "book_binder" );
 static const itype_id itype_glass_shard( "glass_shard" );
 static const itype_id itype_oxyacetylene( "oxyacetylene" );
@@ -67,6 +69,7 @@ static const itype_id itype_test_rock( "test_rock" );
 static const itype_id itype_test_shears( "test_shears" );
 static const itype_id itype_test_shears_off( "test_shears_off" );
 static const itype_id itype_test_weldtank( "test_weldtank" );
+static const itype_id itype_usb_drive( "usb_drive" );
 static const itype_id itype_water_clean( "water_clean" );
 
 static const json_character_flag json_flag_SAFECRACK_NO_TOOL( "SAFECRACK_NO_TOOL" );
@@ -1667,6 +1670,33 @@ TEST_CASE( "prying", "[activity][prying]" )
                 }
             }
         }
+    }
+}
+
+TEST_CASE( "edevice", "[activity][edevice]" )
+{
+    avatar dummy;
+    clear_map();
+    map &here = get_map();
+    std::vector<item_location> edevice_locs;
+    std::vector<item_location> efile_locs;
+    item etd( itype_usb_drive );
+    dummy.i_add( etd );
+    item *etd_ptr = &etd;
+    item_location etd_loc( dummy, etd_ptr );
+
+
+    item_group::ItemList items = item_group::items_from( itemgroup_test_edevices );
+    for( item &i : items ) {
+        REQUIRE( !i.is_browsed() );
+        item *item_ptr = &i;
+        edevice_locs.emplace_back( item_location( dummy, item_ptr ) );
+    }
+    efile_activity_actor act( edevice_locs.front(), edevice_locs, efile_locs, EF_BROWSE );
+    dummy.assign_activity( act );
+    process_activity( dummy );
+    for( item_location &i : edevice_locs ) {
+        REQUIRE( i->is_browsed() );
     }
 }
 

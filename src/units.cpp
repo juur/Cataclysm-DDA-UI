@@ -113,6 +113,40 @@ void angle::deserialize( const JsonValue &jv )
     *this = read_from_json_string( jv, units::angle_units );
 }
 
+template<>
+void ememory::serialize( JsonOut &jsout ) const
+{
+    jsout.write( string_format( "%d B", value_ ) );
+}
+template<>
+void ememory::deserialize( const JsonValue &jv )
+{
+    *this = read_from_json_string( jv, units::ememory_units );
+}
+
+std::string display( const units::ememory &v )
+{
+    //TODO: generic metric units
+    int64_t ebytes = v.value();
+    int i, ipart;
+    int64_t metric_factor;
+    double ebytes_decimal;
+    for( i = 4; i > 0; i-- ) {
+        metric_factor = std::pow( 10, 3 * i );
+        if( ebytes >= metric_factor ) {
+            ipart = ebytes / metric_factor;
+            ebytes_decimal = static_cast<double>( ebytes ) / metric_factor;
+            if( ebytes_decimal > 0 || i > 1 ) {
+                return string_format( "%.1f %s", ebytes_decimal, units::ememory_units[i].first );
+            } else {
+                ebytes = ipart;
+            }
+            break;
+        }
+    }
+    return string_format( "%d %s", ebytes, units::ememory_units[i].first );
+}
+
 std::string display( const units::energy &v )
 {
     using value_type = units::energy::value_type;
