@@ -54,7 +54,10 @@
 #include "translations.h"
 #include "type_id.h"
 #include "ui.h"
+#include "uistate.h"
+#if defined(IMGUI)
 #include "ui_iteminfo.h"
+#endif
 #include "ui_manager.h"
 #include "uistate.h"
 #include "units.h"
@@ -2707,7 +2710,7 @@ std::pair< bool, std::string > inventory_selector::query_string( const std::stri
     do {
         ui_manager::redraw();
         spopup->query_string( /*loop=*/false );
-    } while( !spopup->confirmed() && !spopup->canceled() );
+    } while( !spopup->confirmed() && !spopup->cancelled() );
 
     std::string rval;
     bool confirmed = spopup->confirmed();
@@ -3544,8 +3547,15 @@ void inventory_selector::action_examine( const item_location &sitem )
     data.arrow_scrolling = true;
     int maxwidth = std::max( FULL_SCREEN_WIDTH, TERMX );
     int width = std::min( 80, maxwidth );
+#if defined(IMGUI)
     iteminfo_window info_window( data, point( maxwidth / 2 - width / 2, -1 ), width, 0 );
     info_window.execute();
+#else
+    draw_item_info( [&]() -> catacurses::window {
+        return catacurses::newwin( 0, width, point( maxwidth / 2 - width / 2, 0 ) );
+    },
+    data ).get_first_input();
+#endif
 }
 
 void inventory_selector::highlight()

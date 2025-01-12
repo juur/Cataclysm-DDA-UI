@@ -1806,8 +1806,14 @@ void advanced_inventory::action_examine( advanced_inv_listitem *sitem,
         data.handle_scrolling = true;
         data.arrow_scrolling = true;
 
+#if defined(IMGUI)
         iteminfo_window info_window( data, point( info_startx(), 0 ), info_width(), TERMY );
         info_window.execute();
+#else
+        ret = draw_item_info( [&]() -> catacurses::window {
+            return catacurses::newwin( 0, info_width(), point( info_startx(), 0 ) );
+        }, data ).get_first_input();
+#endif
     }
     if( ret == KEY_NPAGE || ret == KEY_DOWN ) {
         spane.scroll_by( +1 );
@@ -2006,13 +2012,13 @@ void advanced_inventory::display()
                     ui_manager::redraw();
                 }
                 std::string new_filter = spopup->query_string( false );
-                if( spopup->canceled() ) {
+                if( spopup->cancelled() ) {
                     // restore original filter
                     spane.set_filter( filter );
                 } else {
                     spane.set_filter( new_filter );
                 }
-            } while( !spopup->canceled() && !spopup->confirmed() );
+            } while( !spopup->cancelled() && !spopup->confirmed() );
             filter_edit = false;
             spopup = nullptr;
         } else if( action == "RESET_FILTER" ) {
@@ -2108,12 +2114,14 @@ class query_destination_callback : public uilist_callback
         void refresh( uilist *menu ) override {
             draw_squares( menu );
         }
+#if defined(IMGUI)
         float desired_extra_space_left( ) override {
             cataimgui::PushMonoFont();
             float rv = ImGui::CalcTextSize( "[1][2][3]" ).x + ( 3.0 * ImGui::GetStyle().ItemSpacing.x );
             ImGui::PopFont();
             return rv;
         }
+#endif
 };
 
 void query_destination_callback::draw_squares( const uilist *menu )
@@ -2128,6 +2136,7 @@ void query_destination_callback::draw_squares( const uilist *menu )
         sel = _adv_inv.screen_relative_location(
                   static_cast <aim_location>( menu->previewing + 1 ) );
     }
+#if defined(IMGUI)
     cataimgui::PushMonoFont();
     for( int i = 7; i >= 1; i -= 3 ) { // 7,4,1
         for( int ii = 0; ii <= 2; ii++ ) { // +0,1,2
@@ -2155,6 +2164,25 @@ void query_destination_callback::draw_squares( const uilist *menu )
         ImGui::NewLine();
     }
     ImGui::PopFont();
+#else
+    const int ofs = -25 - 4;
+    for( int i = 1; i < 10; i++ ) {
+        aim_location loc = _adv_inv.screen_relative_location( static_cast <aim_location>( i ) );
+        std::string key = _adv_inv.get_location_key( loc );
+        advanced_inv_area &square = _adv_inv.get_one_square( loc );
+        bool in_vehicle = square.can_store_in_vehicle();
+        const char *bracket = in_vehicle ? "<>" : "[]";
+        // always show storage option for vehicle storage, if applicable
+        bool canputitems = menu->entries[i - 1].enabled && square.canputitems();
+        nc_color bcolor = canputitems ? sel == loc ? h_white : c_light_gray : c_red;
+        nc_color kcolor = canputitems ? sel == loc ? h_white : c_dark_gray : c_red;
+        const point p( square.hscreen + point( ofs, 5 ) );
+        mvwprintz( menu->window, p, bcolor, "%c", bracket[0] );
+        wprintz( menu->window, kcolor, "%s", key );
+        wprintz( menu->window, bcolor, "%c", bracket[1] );
+    }
+    wnoutrefresh( menu->window );
+#endif
 }
 
 bool advanced_inventory::query_destination( aim_location &def )

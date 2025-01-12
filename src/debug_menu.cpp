@@ -48,6 +48,9 @@
 #include "creature_tracker.h"
 #include "cursesdef.h"
 #include "debug.h"
+#if defined(IMGUI)
+#include "imgui_demo.h"
+#endif
 #include "dialogue.h"
 #include "dialogue_chatbin.h"
 #include "dialogue_helpers.h"
@@ -278,7 +281,9 @@ std::string enum_to_string<debug_menu::debug_menu_index>( debug_menu::debug_menu
 		case debug_menu::debug_menu_index::EDIT_FACTION: return "EDIT_FACTION";
 		case debug_menu::debug_menu_index::WRITE_CITY_LIST: return "WRITE_CITY_LIST";
         case debug_menu::debug_menu_index::TALK_TOPIC: return "TALK_TOPIC";
+#if defined(IMGUI)
         case debug_menu::debug_menu_index::IMGUI_DEMO: return "IMGUI_DEMO";
+#endif
         // *INDENT-ON*
         case debug_menu::debug_menu_index::last:
             break;
@@ -909,7 +914,9 @@ static int info_uilist( bool display_all_entries = true )
             { uilist_entry( debug_menu_index::TEST_MAP_EXTRA_DISTRIBUTION, true, 'e', _( "Test map extra list" ) ) },
             { uilist_entry( debug_menu_index::GENERATE_EFFECT_LIST, true, 'L', _( "Generate effect list" ) ) },
             { uilist_entry( debug_menu_index::WRITE_CITY_LIST, true, 'C', _( "Write city list to cities.output" ) ) },
+#if defined(IMGUI)
             { uilist_entry( debug_menu_index::IMGUI_DEMO, true, 'u', _( "Open ImGui demo screen" ) ) },
+#endif
         };
         uilist_initializer.insert( uilist_initializer.begin(), debug_only_options.begin(),
                                    debug_only_options.end() );
@@ -3255,7 +3262,7 @@ static void debug_menu_force_temperature()
                       .text( current ? std::to_string( static_cast<int>( std::round( *current ) ) ) : "" )
                       .query_int();
 
-            return pop.canceled() ? current : std::optional<float>( static_cast<float>( ret ) );
+            return pop.cancelled() ? current : std::optional<float>( static_cast<float>( ret ) );
         };
 
         std::optional<float> current;
@@ -3725,7 +3732,7 @@ static void vehicle_battery_charge()
     .title( _( "By how much?  (in kJ, negative to discharge)" ) )
     .width( 30 )
     .edit( amount );
-    if( !popup.canceled() ) {
+    if( !popup.cancelled() ) {
         vehicle &veh = v_part_pos->vehicle();
         if( amount >= 0 ) {
             veh.charge_battery( here, amount, false );
@@ -3810,12 +3817,13 @@ static void wind_speed()
 }
 
 
-
+#if defined(IMGUI)
 static void run_imgui_demo()
 {
     imgui_demo_ui demo;
     demo.run();
 }
+#endif
 
 static void write_city_list()
 {
@@ -4384,9 +4392,11 @@ void debug()
             write_city_list();
             break;
 
+#if defined(IMGUI)
         case debug_menu_index::IMGUI_DEMO:
             run_imgui_demo();
             break;
+#endif
 
         case debug_menu_index::TALK_TOPIC:
             display_talk_topic();

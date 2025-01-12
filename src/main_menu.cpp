@@ -24,12 +24,18 @@
 #include "auto_pickup.h"
 #include "avatar.h"
 #include "cata_path.h"
+#if defined(IMGUI)
+#include "cata_imgui.h"
+#endif
 #include "cata_scope_helpers.h"
 #include "cata_utility.h"
 #include "catacharset.h"
 #include "character_id.h"
 #include "color.h"
 #include "debug.h"
+#if defined(IMGUI)
+#include "imgui_demo.h"
+#endif
 #include "enums.h"
 #include "filesystem.h"
 #include "game.h"
@@ -60,6 +66,11 @@
 #include "ui_manager.h"
 #include "wcwidth.h"
 #include "worldfactory.h"
+
+#if defined(IMGUI)
+#include "imgui/imgui.h"
+#endif
+
 
 static const mod_id MOD_INFORMATION_dda( "dda" );
 static const mod_id MOD_INFORMATION_dda_tutorial( "dda_tutorial" );
@@ -517,7 +528,9 @@ void main_menu::init_strings()
     vSettingsSubItems.emplace_back( pgettext( "Main Menu|Settings", "A<u|U>topickup" ) );
     vSettingsSubItems.emplace_back( pgettext( "Main Menu|Settings", "Sa<f|F>emode" ) );
     vSettingsSubItems.emplace_back( pgettext( "Main Menu|Settings", "Colo<r|R>s" ) );
+#if defined(IMGUI)
     vSettingsSubItems.emplace_back( pgettext( "Main Menu|Settings", "<I|i>mGui Demo Screen" ) );
+#endif
 
     vSettingsHotkeys.clear();
     for( const std::string &item : vSettingsSubItems ) {
@@ -863,9 +876,11 @@ bool main_menu::opening_screen()
                         get_safemode().show();
                     } else if( sel2 == 4 ) { /// Colors
                         all_colors.show_gui();
+#if defined(IMGUI)
                     } else if( sel2 == 5 ) { /// ImGui demo
                         imgui_demo_ui demo;
                         demo.run();
+#endif
                     }
                     break;
                 case main_menu_opts::WORLD:
