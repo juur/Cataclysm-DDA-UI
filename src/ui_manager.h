@@ -13,7 +13,9 @@ namespace cataimgui
 class client;
 } // namespace cataimgui
 
+#if defined(IMGUI)
 extern std::unique_ptr<cataimgui::client> imclient;
+#endif
 
 namespace catacurses
 {

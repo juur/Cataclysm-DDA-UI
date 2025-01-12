@@ -2,6 +2,8 @@
 #ifndef CATA_SRC_UI_ITEMINFO_H
 #define CATA_SRC_UI_ITEMINFO_H
 
+#ifndef IMGUI_DISABLE
+
 #include "cata_imgui.h"
 #include "imgui/imgui.h"
 #include "input_context.h"
@@ -29,4 +31,5 @@ class iteminfo_window : public cataimgui::window
         cataimgui::scroll s;
 };
 
+#endif // IMGUI_DISABLE
 #endif // CATA_SRC_UI_ITEMINFO_H

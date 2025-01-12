@@ -38,6 +38,13 @@
 
 string_input_popup::string_input_popup() = default;
 
+#if !defined(IMGUI)
+string_input_popup::string_input_popup( [[maybe_unused]] int something, const std::string &value )
+{
+    _text = value;
+}
+#endif
+
 string_input_popup::~string_input_popup() = default;
 
 void string_input_popup::create_window()
@@ -295,6 +302,7 @@ void string_input_popup::draw( ui_adaptor *const ui, const utf8_wrapper &ret,
             } else if( _position == static_cast<int>( ret.length() ) ) {
                 // one '_' is already printed, formatted as cursor
                 l = std::min<size_t>( l, _max_length - ret.display_width() - 1 );
+
             } else {
                 l = std::min<size_t>( l, _max_length - ret.display_width() );
             }
@@ -328,9 +336,9 @@ void string_input_popup::draw( ui_adaptor *const ui, const utf8_wrapper &ret,
     }
 }
 
-void string_input_popup::query( const bool loop, const bool draw_only )
+const std::string &string_input_popup::query( const bool loop, const bool draw_only )
 {
-    query_string( loop, draw_only );
+    return query_string( loop, draw_only );
 }
 
 template<typename T>
@@ -338,7 +346,7 @@ T query_int_impl( string_input_popup &p, const bool loop, const bool draw_only )
 {
     do {
         ret_val<T> result = try_parse_integer<T>( p.query_string( loop, draw_only ), true );
-        if( p.canceled() ) {
+        if( p.cancelled() ) {
             return 0;
         }
         if( result.success() ) {
@@ -619,7 +627,7 @@ void string_input_popup::edit( std::string &value )
     only_digits( false );
     text( value );
     query();
-    if( !canceled() ) {
+    if( !cancelled() ) {
         value = text();
     }
 }
@@ -631,7 +639,7 @@ static void edit_integer( string_input_popup &p, T &value )
     while( true ) {
         p.text( std::to_string( value ) );
         p.query();
-        if( p.canceled() ) {
+        if( p.cancelled() ) {
             break;
         }
         ret_val<T> parsed_val = try_parse_integer<T>( p.text(), true );
@@ -704,3 +712,25 @@ string_input_params string_input_params::parse_string_input_params( const JsonOb
     }
     return p;
 }
+#if !defined(IMGUI)
+void string_input_popup::set_label( const std::string &txt )
+{
+    this->_title = txt;
+}
+
+void string_input_popup::set_max_input_length( int length )
+{
+    this->_max_length = length;
+}
+
+void string_input_popup::set_description( const std::string &desc, [[maybe_unused]] const nc_color
+        &default_color, [[maybe_unused]] bool monofont )
+{
+    this->_description = desc;
+}
+
+void string_input_popup::set_text( const std::string &txt )
+{
+    this->_text = txt;
+}
+#endif
