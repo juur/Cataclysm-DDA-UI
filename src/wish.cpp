@@ -1724,8 +1724,15 @@ void debug_menu::wishitemgroup( bool test )
             break;
         }
         size_t amount = 0;
+#if defined(IMGUI)
         number_input_popup<int> popup( 0, test ? 100 : 1, _( "Spawn group how many times?" ) );
         const int &ret = popup.query();
+#else
+		string_input_popup popup;
+		popup.title(_( "Spawn group how many times?" ))
+		.only_digits( true );
+		const int ret = popup.query_int();
+#endif
         if( popup.cancelled() || ret < 1 ) {
             return;
         }
