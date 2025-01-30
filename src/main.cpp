@@ -809,12 +809,12 @@ int main( int argc, const char *argv[] )
     // Load the colors of ImGui to match the colors set by the user.
 #if defined(IMGUI)
     cataimgui::init_colors();
-#endif
 
     // set decimal point for float input widgets
     // uses system locale, because that's what imgui uses to parse and display floats
     ImGui::GetPlatformIO().Platform_LocaleDecimalPoint =
         static_cast<unsigned char>( *localeconv()->decimal_point );
+#endif
 
     // Override existing settings from cli  options
     if( cli.disable_ascii_art ) {
