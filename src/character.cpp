@@ -13500,7 +13500,14 @@ bool character_martial_arts::pick_style( const Character &you ) // Style selecti
     ctxt.register_action( "SHOW_DESCRIPTION" );
 
     uilist kmenu;
+#if !defined(IMGUI)
+	kmenu.w_width_setup = []() -> int {
+        return TERMX <= 60 ? TERMX - 5 : std::min(TERMX - 20, 70);
+    };
+    kmenu.title = _( "Select a style." );
+#else
     kmenu.title = _( "Select a style.\n" );
+#endif
     kmenu.text = string_format( _( "STR: <color_white>%d</color>, DEX: <color_white>%d</color>, "
                                    "PER: <color_white>%d</color>, INT: <color_white>%d</color>\n"
                                    "Press [<color_yellow>%s</color>] for technique details and compatible weapons.\n" ),
