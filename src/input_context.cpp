@@ -1038,7 +1038,7 @@ action_id input_context::display_menu( bool permit_execute_action )
     input_manager::t_action_contexts old_action_contexts( inp_mngr.action_contexts );
 #if !defined(IMGUI)
     // current status: adding/removing/executing/showing keybindings
-    enum { s_remove, s_add, s_add_global, s_execute, s_show } status = s_show;
+    enum { s_remove, s_add, s_add_global, s_execute, s_show, s_reset } status = s_show;
 #endif
     // copy of registered_actions, but without the ANY_INPUT and COORDINATE, which should not be shown
     std::vector<std::string> org_registered_actions( registered_actions );
@@ -1067,7 +1067,7 @@ action_id input_context::display_menu( bool permit_execute_action )
     static const nc_color unbound_key = c_light_red;
     static const nc_color h_unbound_key = h_light_red;
 
-    enum class kb_btn_idx { none, remove, add_local, add_global } highlighted_btn_index =
+    enum class kb_btn_idx { none, remove, add_local, add_global, reset } highlighted_btn_index =
         kb_btn_idx::none;
     // (vertical) scroll offset
     size_t scroll_offset = 0;
@@ -1093,19 +1093,24 @@ action_id input_context::display_menu( bool permit_execute_action )
         draw_border( w_help, BORDER_COLOR, _( "Keybindings" ), c_light_red );
         draw_scrollbar( w_help, scroll_offset, display_height,
                         filtered_registered_actions.size(), point( 0, 7 ), c_white, true );
-        const int legend_lines = 1 + fold_and_print( w_help, point( 2, 1 ), legwidth, c_white, legend );
+		fold_and_print( w_help, point( 2, 1 ), legwidth, c_white, legend );
         const auto item_color = []( const int index_to_draw, int index_highlighted ) {
             return index_highlighted == index_to_draw ? h_light_gray : c_light_gray;
         };
-        right_print( w_help, legend_lines, 2,
+
+		right_print( w_help, 1, 2,
+				     item_color( static_cast<int>( kb_btn_idx::reset ), int( highlighted_btn_index ) ),
+					 string_format( _( "<[<color_yellow>%c</color>] Reset keybinding>" ),
+					                fallback_keys.at( fallback_action::reset ) ) );
+        right_print( w_help, 2, 2,
                      item_color( static_cast<int>( kb_btn_idx::remove ), int( highlighted_btn_index ) ),
                      string_format( _( "<[<color_yellow>%c</color>] Remove keybinding>" ),
                                     fallback_keys.at( fallback_action::remove ) ) );
-        right_print( w_help, legend_lines, 26,
+        right_print( w_help, 3, 2,
                      item_color( static_cast<int>( kb_btn_idx::add_local ), int( highlighted_btn_index ) ),
                      string_format( _( "<[<color_yellow>%c</color>] Add local keybinding>" ),
                                     fallback_keys.at( fallback_action::add_local ) ) );
-        right_print( w_help, legend_lines, 54,
+        right_print( w_help, 4, 2,
                      item_color( static_cast<int>( kb_btn_idx::add_global ), int( highlighted_btn_index ) ),
                      string_format( _( "<[<color_yellow>%c</color>] Add global keybinding>" ),
                                     fallback_keys.at( fallback_action::add_global ) ) );
@@ -1132,7 +1137,7 @@ action_id input_context::display_menu( bool permit_execute_action )
                 // We're trying to add a global, but this action has a local
                 // defined, so gray out the invlet.
                 mvwprintz( w_help, point( 2, i + 7 ), c_dark_gray, "%c ", invlet );
-            } else if( status == s_add || status == s_add_global || status == s_remove ) {
+            } else if( status == s_add || status == s_add_global || status == s_remove || status == s_reset ) {
                 mvwprintz( w_help, point( 2, i + 7 ), c_light_blue, "%c ", invlet );
             } else if( status == s_execute ) {
                 mvwprintz( w_help, point( 2, i + 7 ), c_white, "%c ", invlet );
@@ -1324,7 +1329,9 @@ action_id input_context::display_menu( bool permit_execute_action )
                             highlighted_btn_index = kb_btn_idx::add_local;
                         } else if( p.x >= 73 && p.x < 96 ) {
                             highlighted_btn_index = kb_btn_idx::remove;
-                        }
+                        } else if( p.x >= 96 && p.x < 119 ) {
+							highlighted_btn_index = kb_btn_idx::reset;
+						}
                     }
                 }
             }
@@ -1339,6 +1346,9 @@ action_id input_context::display_menu( bool permit_execute_action )
                     case kb_btn_idx::add_global:
                         status = s_add_global;
                         break;
+					case kb_btn_idx::reset:
+						status = s_reset;
+						break;
                     case kb_btn_idx::none:
                         break;
                 }
@@ -1362,6 +1372,11 @@ action_id input_context::display_menu( bool permit_execute_action )
             if( !filtered_registered_actions.empty() ) {
                 status = s_remove;
             }
+		} else if( action == "RESET"
+				   || raw_input_char == fallback_keys.at( fallback_action::reset ) ) {
+			if( !filtered_registered_actions.empty() ) {
+				status = s_reset;
+			}
         } else if( ( action == "EXECUTE"
                      || raw_input_char == fallback_keys.at( fallback_action::execute ) )
                    && permit_execute_action ) {
@@ -1432,61 +1447,14 @@ action_id input_context::display_menu( bool permit_execute_action )
             // Only attempt removal for a local context, or when there's
             // bindings for the default context.
             if( status == s_remove && ( is_local || !is_empty ) ) {
-                if( !get_option<bool>( "QUERY_KEYBIND_REMOVAL" ) || query_yn( is_local &&
-                        is_empty ? _( "Reset to global bindings for %s?" ) : _( "Clear keys for %s?" ), name ) ) {
-
-                    // If it's global, reset the global actions.
-                    std::string category_to_access = category;
-                    if( !is_local ) {
-                        category_to_access = default_context_id;
-                    }
-
-                    inp_mngr.remove_input_for_action( action_id, category_to_access );
-                    changed = true;
-                }
+				changed = action_remove( name, action_id, is_local, is_empty );
+			} else if( status == s_reset ) {
+				changed = action_reset( action_id );
             } else if( status == s_add_global && is_local ) {
                 // Disallow adding global actions to an action that already has a local defined.
                 popup( _( "There are already local keybindings defined for this action, please remove them first." ) );
             } else if( status == s_add || status == s_add_global ) {
-                const input_event new_event = query_popup()
-                                              .preferred_keyboard_mode( preferred_keyboard_mode )
-                                              .message( _( "New key for %s" ), name )
-                                              .allow_anykey( true )
-                                              .query()
-                                              .evt;
-
-                if( action_uses_input( action_id, new_event )
-                    // Allow adding keys already used globally to local bindings
-                    && ( status == s_add_global || is_local ) ) {
-                    popup_getkey( _( "This key is already used for %s." ), name );
-                    status = s_show;
-                    continue;
-                }
-
-                const std::string conflicts = get_conflicts( new_event, action_id );
-                const bool has_conflicts = !conflicts.empty();
-                bool resolve_conflicts = false;
-
-                if( has_conflicts ) {
-                    resolve_conflicts = query_yn(
-                                            _( "This key conflicts with %s. Remove this key from the conflicting command(s), and continue?" ),
-                                            conflicts.c_str() );
-                }
-
-                if( !has_conflicts || resolve_conflicts ) {
-                    if( resolve_conflicts ) {
-                        clear_conflicting_keybindings( new_event, NULL );
-                    }
-
-                    // We might be adding a local or global action.
-                    std::string category_to_access = category;
-                    if( status == s_add_global ) {
-                        category_to_access = default_context_id;
-                    }
-
-                    inp_mngr.add_input_for_action( action_id, category_to_access, new_event );
-                    changed = true;
-                }
+				changed = action_add( name, action_id, is_local, status == s_add ? kb_menu_status::add : kb_menu_status::add_global );
             } else if( status == s_execute && permit_execute_action ) {
                 action_to_execute = look_up_action( action_id );
                 break;
