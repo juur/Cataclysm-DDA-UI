@@ -12,6 +12,7 @@
 #include "game.h"
 #include "mtype.h"
 #include "npc.h"
+#include "options.h"
 #include "weakpoint.h"
 
 void kill_tracker::reset( const std::map<mtype_id, int> &kills_,
