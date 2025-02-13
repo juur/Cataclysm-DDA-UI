@@ -68,12 +68,9 @@ static const efftype_id effect_pet( "pet" );
 
 static const mongroup_id GROUP_ZOMBIE( "GROUP_ZOMBIE" );
 
-<<<<<<< HEAD
-=======
 class ui_adaptor;
 
 #if defined(IMGUI)
->>>>>>> 5812d986d9 (initial commit of imgui-optional)
 class wish_mutate_callback: public uilist_callback
 {
     public:

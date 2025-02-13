@@ -31,6 +31,10 @@
 #include "translations.h"
 #include "ui_manager.h"
 
+#if !defined(IMGUI)
+#include "output.h"
+#endif
+
 template <typename E> struct enum_traits;
 
 #if defined(IMGUI)

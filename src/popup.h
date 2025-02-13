@@ -16,6 +16,8 @@
 #if !defined(IMGUI)
 #include "cursesdef.h"
 #include "string_formatter.h"
+
+class ui_adaptor;
 #endif
 
 class query_popup_impl;
