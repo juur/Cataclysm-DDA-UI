@@ -14,6 +14,10 @@
 #include "string_formatter.h"
 #include "ui_manager.h"
 
+#if !defined(IMGUI)
+#include "ui.h"
+#endif
+
 #if defined(IMGUI)
 class query_popup_impl : public cataimgui::window
 {
