@@ -60,6 +60,7 @@ target_link_libraries(
         ghc-filesystem
         )
 
+if (IMGUI)
 # ImGUI
 if (TILES)
         add_library(
@@ -197,4 +198,5 @@ if (CURSES)
                     ${CURSES_INCLUDE_DIR}/ncurses$<$<BOOL:${CURSES_NEED_WIDE}>:w>
             )
         endif()
+endif ()
 endif ()
