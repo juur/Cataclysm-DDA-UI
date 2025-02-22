@@ -5,6 +5,7 @@
 #include <string>
 #include <utility>
 
+#include "avatar.h"
 #include "cata_variant.h"
 #include "character.h"
 #include "character_id.h"

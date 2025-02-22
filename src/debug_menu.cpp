@@ -48,9 +48,6 @@
 #include "creature_tracker.h"
 #include "cursesdef.h"
 #include "debug.h"
-#if defined(IMGUI)
-#include "imgui_demo.h"
-#endif
 #include "dialogue.h"
 #include "dialogue_chatbin.h"
 #include "dialogue_helpers.h"
@@ -66,7 +63,9 @@
 #include "game.h"
 #include "game_inventory.h"
 #include "global_vars.h"
+#if defined(IMGUI)
 #include "imgui_demo.h"
+#endif
 #include "input.h"
 #include "input_context.h"
 #include "input_enums.h"
