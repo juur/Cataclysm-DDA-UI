@@ -35,8 +35,10 @@ enum class description_target : int {
 
 static const Creature *seen_critter( const tripoint_bub_ms &p )
 {
+    const map &here = get_map();
+
     const Creature *critter = get_creature_tracker().creature_at( p, true );
-    if( critter != nullptr && get_player_view().sees( *critter ) ) {
+    if( critter != nullptr && get_player_view().sees( here, *critter ) ) {
         return critter;
     }
 
@@ -45,6 +47,7 @@ static const Creature *seen_critter( const tripoint_bub_ms &p )
 
 void game::extended_description( const tripoint_bub_ms &p )
 {
+    const map &here = get_map();
     ui_adaptor ui;
     const int top = 3;
     int width = 0;
@@ -108,7 +111,7 @@ void game::extended_description( const tripoint_bub_ms &p )
             }
             break;
             case description_target::furniture:
-                if( !u.sees( p ) || !m.has_furn( p ) ) {
+                if( !u.sees( here, p ) || !m.has_furn( p ) ) {
                     desc = _( "You do not see any furniture here." );
                 } else {
                     const furn_id fid = m.furn( p );
@@ -120,7 +123,7 @@ void game::extended_description( const tripoint_bub_ms &p )
                 }
                 break;
             case description_target::terrain:
-                if( !u.sees( p ) ) {
+                if( !u.sees( here, p ) ) {
                     desc = _( "You can't see the terrain here." );
                 } else {
                     const ter_id tid = m.ter( p );
@@ -133,7 +136,7 @@ void game::extended_description( const tripoint_bub_ms &p )
                 break;
             case description_target::vehicle:
                 const optional_vpart_position vp = m.veh_at( p );
-                if( !u.sees( p ) || !vp ) {
+                if( !u.sees( here, p ) || !vp ) {
                     desc = _( "You can't see vehicles or appliances here." );
                 } else {
                     desc = vp.extended_description().front();
