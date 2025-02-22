@@ -33,16 +33,15 @@
 #include "character_id.h"
 #include "color.h"
 #include "debug.h"
-#if defined(IMGUI)
-#include "imgui_demo.h"
-#endif
 #include "enums.h"
 #include "filesystem.h"
 #include "game.h"
 #include "gamemode.h"
 #include "get_version.h"
 #include "help.h"
+#if defined(IMGUI)
 #include "imgui_demo.h"
+#endif
 #include "localized_comparator.h"
 #include "mapbuffer.h"
 #include "mapsharing.h"
