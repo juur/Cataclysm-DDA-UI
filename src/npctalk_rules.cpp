@@ -1,5 +1,6 @@
 #include "npctalk_rules.h"
 
+#include <cassert>
 #include <iterator>
 #include <map>
 #include <memory>
@@ -449,7 +450,7 @@ void follower_rules_ui_impl::draw_controls()
     ImGui::InvisibleButton( "BOTTOM_OF_WINDOW_KB_SCROLL_SELECTABLE", ImVec2( 1.0, 1.0 ) );
 }
 #else
-void follower_rules_ui::draw_follower_rules_ui( npc *guy )
+void follower_rules_ui::draw_follower_rules_ui( [[maybe_unused]] npc *guy )
 {
     assert( guy != NULL );
 }
