@@ -64,6 +64,7 @@ jobs:
             ext: zip
             content: application/zip
             sound: 0
+            imgui: 0
           - name: Windows Tiles Sounds x64 MSVC
             artifact: windows-with-graphics-and-sounds-x64
             arch: x64
@@ -72,6 +73,7 @@ jobs:
             ext: zip
             content: application/zip
             sound: 1
+            imgui: 0
           - name: Linux Tiles x64
             os: ubuntu-20.04
             mxe: none
@@ -79,6 +81,7 @@ jobs:
             libbacktrace: 1
             tiles: 1
             sound: 0
+            imgui: 0
             artifact: linux-with-graphics-x64
             ext: tar.gz
             content: application/gzip
@@ -89,6 +92,7 @@ jobs:
             libbacktrace: 1
             tiles: 1
             sound: 1
+            imgui: 0
             artifact: linux-with-graphics-and-sounds-x64
             ext: tar.gz
             content: application/gzip
@@ -99,6 +103,7 @@ jobs:
             libbacktrace: 1
             tiles: 0
             sound: 0
+            imgui: 0
             artifact: linux-terminal-only-x64
             ext: tar.gz
             content: application/gzip
@@ -107,6 +112,7 @@ jobs:
             mxe: none
             tiles: 0
             sound: 0
+            imgui: 0
             artifact: osx-terminal-only-universal
             ext: dmg
             content: application/x-apple-diskimage
@@ -115,6 +121,7 @@ jobs:
             mxe: none
             tiles: 1
             sound: 0
+            imgui: 0
             artifact: osx-with-graphics-universal
             ext: dmg
             content: application/x-apple-diskimage
@@ -263,7 +270,7 @@ jobs:
       - name: Build CDDA (linux)
         if: runner.os == 'Linux' && matrix.mxe == 'none' && matrix.android == 'none' && !matrix.wasm
         run: |
-          make -j$((`nproc`+0)) TILES=${{ matrix.tiles }} SOUND=${{ matrix.tiles }} RELEASE=1 LOCALIZE=1 LANGUAGES=all BACKTRACE=1 LIBBACKTRACE=${{ matrix.libbacktrace }} PCH=0 bindist
+          make -j$((`nproc`+0)) IMGUI=${{ matrix.imgui }} TILES=${{ matrix.tiles }} SOUND=${{ matrix.tiles }} RELEASE=1 LOCALIZE=1 LANGUAGES=all BACKTRACE=1 LIBBACKTRACE=${{ matrix.libbacktrace }} PCH=0 bindist
           mv cataclysmdda-0.I.tar.gz cdda-${{ matrix.artifact }}-${{ needs.release.outputs.timestamp }}.tar.gz
       - name: Build CDDA (WebAssembly)
         if: matrix.wasm && success()
@@ -276,7 +283,7 @@ jobs:
         env:
           PLATFORM: /opt/mxe/usr/bin/${{ matrix.mxe }}-w64-mingw32.static.gcc12-
         run: |
-          make -j$((`nproc`+0)) CROSS="${PLATFORM}" TILES=1 SOUND=1 RELEASE=1 LOCALIZE=1 LANGUAGES=all BACKTRACE=1 LIBBACKTRACE=${{ matrix.libbacktrace }} PCH=0 bindist
+          make -j$((`nproc`+0)) CROSS="${PLATFORM}" IMGUI=0 TILES=1 SOUND=1 RELEASE=1 LOCALIZE=1 LANGUAGES=all BACKTRACE=1 LIBBACKTRACE=${{ matrix.libbacktrace }} PCH=0 bindist
           mv cataclysmdda-0.I.zip cdda-${{ matrix.artifact }}-${{ needs.release.outputs.timestamp }}.zip
       - name: Build CDDA (windows msvc)
         if: runner.os == 'Windows'
@@ -286,13 +293,13 @@ jobs:
           CDDA_RELEASE_BUILD: 1
           VCPKG_OVERLAY_TRIPLETS: ${{ github.workspace }}\.github\vcpkg_triplets
         run: |
-          msbuild -m -p:Configuration=Release -p:Platform=${{ matrix.arch }} "-target:Cataclysm-vcpkg-static;JsonFormatter-vcpkg-static" msvc-full-features\Cataclysm-vcpkg-static.sln
+          msbuild -m -p:Configuration=Release-NoImGui -p:Platform=${{ matrix.arch }} "-target:Cataclysm-vcpkg-static;JsonFormatter-vcpkg-static" msvc-full-features\Cataclysm-vcpkg-static.sln
           .\build-scripts\windist.ps1
           mv cataclysmdda-0.I.zip cdda-${{ matrix.artifact }}-${{ needs.release.outputs.timestamp }}.zip
       - name: Build CDDA (osx)
         if: runner.os == 'macOS'
         run: |
-          make -j3 TILES=${{ matrix.tiles }} SOUND=${{ matrix.tiles }} RELEASE=1 LOCALIZE=1 LANGUAGES=all BACKTRACE=0 PCH=0 USE_HOME_DIR=1 FRAMEWORK=1 UNIVERSAL_BINARY=1 dmgdist
+          make -j3 IMGUI=${{ matrix.imgui }} TILES=${{ matrix.tiles }} SOUND=${{ matrix.tiles }} RELEASE=1 LOCALIZE=1 LANGUAGES=all BACKTRACE=0 PCH=0 USE_HOME_DIR=1 FRAMEWORK=1 UNIVERSAL_BINARY=1 dmgdist
           mv Cataclysm.dmg cdda-${{ matrix.artifact }}-${{ needs.release.outputs.timestamp }}.dmg
       - name: Set up JDK 8 (android)
         if: runner.os == 'Linux' && matrix.android != 'none' && matrix.mxe == 'none'
