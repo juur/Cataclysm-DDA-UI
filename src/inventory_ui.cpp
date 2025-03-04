@@ -54,8 +54,6 @@
 #include "translations.h"
 #include "type_id.h"
 #include "uilist.h"
-#include "ui.h"
-#include "uistate.h"
 #if defined(IMGUI)
 #include "ui_iteminfo.h"
 #endif
