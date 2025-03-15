@@ -15,7 +15,7 @@
 #include "ui_manager.h"
 
 #if !defined(IMGUI)
-#include "ui.h"
+#include "uilist.h"
 #endif
 
 #if defined(IMGUI)
