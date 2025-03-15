@@ -361,7 +361,7 @@ void game::list_missions()
     new_instance.draw_mission_ui();
 }
 #else
-#include "ui.h"
+#include "uilist.h"
 void game::list_missions()
 {
     constexpr int MAX_CHARS_PER_MISSION_ROW_NAME{ 38 };

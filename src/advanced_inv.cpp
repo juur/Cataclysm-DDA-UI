@@ -1916,13 +1916,13 @@ void advanced_inventory::process_action( const std::string &input_action )
                 ui_manager::redraw();
             }
             std::string new_filter = spopup->query_string( false );
-            if( spopup->canceled() ) {
+            if( spopup->cancelled() ) {
                 // restore original filter
                 spane.set_filter( filter );
             } else {
                 spane.set_filter( new_filter );
             }
-        } while( !spopup->canceled() && !spopup->confirmed() );
+        } while( !spopup->cancelled() && !spopup->confirmed() );
         filter_edit = false;
         spopup = nullptr;
     } else if( action == "RESET_FILTER" ) {
